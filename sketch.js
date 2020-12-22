@@ -2,6 +2,7 @@
 // http://codingtra.in
 // http://patreon.com/codingtrain
 // Code for: https://youtu.be/RUSvMxxm_Jo
+var inp1;
 
 var database;
 
@@ -15,11 +16,15 @@ function setup() {
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
   canvas.mouseReleased(endPath);
-  //canvas.position(0,0);
+  canvas.position(0,0);
 
   var inpt = createElement("textarea","");
   var ht = windowHeight;
-  
+  inp1 = createColorPicker('#ff0000');
+  inp1.position(0,0);
+  inpt.style("line-height", "4ch");
+  inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
+  inpt.style("background-size","100% 4ch");
   inpt.style("width", "300px");
   inpt.style("height", height);
   inpt.style("background-color","grey");
@@ -69,11 +74,13 @@ function endPath() {
 
 function draw() {
   background(0);
+  var col = inp1.color();
 
   if (isDrawing) {
     var point = {
       x: mouseX,
-      y: mouseY
+      y: mouseY,
+      z: col
     };
     currentPath.push(point);
   }
