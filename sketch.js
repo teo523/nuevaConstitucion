@@ -15,6 +15,16 @@ function setup() {
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
   canvas.mouseReleased(endPath);
+  //canvas.position(0,0);
+
+  var inpt = createElement("textarea","");
+  var ht = windowHeight;
+  
+  inpt.style("width", "300px");
+  inpt.style("height", height);
+  inpt.style("background-color","grey");
+  inpt.style("color","white");
+  inpt.position(width - 300,0);
 
   var saveButton = select('#saveButton');
   saveButton.mousePressed(saveDrawing);
