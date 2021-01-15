@@ -9,9 +9,14 @@ var database;
 var drawing = [];
 var currentPath = [];
 var isDrawing = false;
+let img;
+
+function preload() {
+  img = loadImage('assets/images/concrete.jpg');
+}
 
 function setup() {
-  canvas = createCanvas(windowWidth, 5000);
+  canvas = createCanvas(windowWidth, windowHeight);
 
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
@@ -73,14 +78,21 @@ function endPath() {
 }
 
 function draw() {
-  background(0);
+stroke(0);
+background(img);
+
+r = rect(0,0,width, 5000);
   var col = inp1.color();
+  var drip = random(10);
+  var dmax = 0;
 
   if (isDrawing) {
     var point = {
       x: mouseX,
       y: mouseY,
-      z: col
+      z: col,
+      dr: drip,
+      dm: dmax
     };
     currentPath.push(point);
   }
@@ -90,9 +102,16 @@ function draw() {
   noFill();
   for (var i = 0; i < drawing.length; i++) {
     var path = drawing[i];
+
     beginShape();
     for (var j = 0; j < path.length; j++) {
-      vertex(path[j].x, path[j].y);
+    	stroke(path[j].z);
+     	vertex(path[j].x, path[j].y);
+        if ( path[j].dm <  path[j].dr)
+        	path[j].dm = path[j].dm + 0.1;
+     	for (var k = 0; k < path[j].dr; k++) {
+     		line(path[j].x, path[j].y,path[j].x, path[j].y + path[j].dm)
+  		}
     }
     endShape();
   }
