@@ -3,16 +3,25 @@
 // http://patreon.com/codingtrain
 // Code for: https://youtu.be/RUSvMxxm_Jo
 var inp1;
-
+var cl1;
 var database;
+let v = 1.0 / 9.0;
+// kernel is the 3x3 matrix of normalized values
+let kernel = [[ v, v, v ], [ v, v, v ], [ v, v, v ]]; 
 
 var drawing = [];
 var currentPath = [];
 var isDrawing = false;
 let img;
+let preImg;
+let fltImg;
+let c;
+let bool = 0;
 
 function preload() {
   img = loadImage('assets/images/concrete.jpg');
+  preImg = loadImage('assets/images/prev.jpg');
+
 }
 
 function setup() {
@@ -23,21 +32,34 @@ function setup() {
   canvas.mouseReleased(endPath);
   canvas.position(0,0);
 
+  
+
+
   var inpt = createElement("textarea","");
   var ht = windowHeight;
   inp1 = createColorPicker('#ff0000');
   inp1.position(0,0);
-  inpt.style("line-height", "4ch");
-  inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
-  inpt.style("background-size","100% 4ch");
-  inpt.style("width", "300px");
-  inpt.style("height", height);
-  inpt.style("background-color","grey");
-  inpt.style("color","white");
-  inpt.position(width - 300,0);
+  //inpt.style("line-height", "4ch");
+  //inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
+  inpt.style("background","transparent");
+  inpt.style("background-image","url('assets/images/patch.png')");
+  
+  inpt.style("background-repeat","repeat-x");
+  inpt.style("background-size","auto 100%");
+  inpt.style("color","black");
+  //min-height:50px;margin-top:-40px;padding-bottom:40px");
+  //inpt.style("background-size","100% 4ch");
+  inpt.style("width", width);
+  inpt.style("height", "50px");
+  inpt.style("font-size", "20px");
+  inpt.position(0,height - 50);
 
+
+  //cursor('assets/images/curs.png');
   var saveButton = select('#saveButton');
   saveButton.mousePressed(saveDrawing);
+  saveButton.position(0,100);
+  saveButton.style("z-index","1000");
 
   var clearButton = select('#clearButton');
   clearButton.mousePressed(clearDrawing);
@@ -79,10 +101,32 @@ function endPath() {
 
 function draw() {
 stroke(0);
+
+
+
 background(img);
 
+
+
+
+
+if(bool == 0){
+c = preImg.get(preImg.width/3,0,preImg.width/3-100,preImg.height);
+d = get(2*width/3,0,width/3,height);
+c.filter(BLUR,20);
+d.filter(BLUR,20);
+
+bool ++;
+}
+let cutImg = preImg.get(preImg.width/3,0,preImg.width/3+100,preImg.height);
+image(cutImg,0,0);
+image(c,0,0);
+image(d,2*width/3+100,0);
+
 r = rect(0,0,width, 5000);
-  var col = inp1.color();
+  colorMode(RGB, 1, 1, 1, 1);
+  var col = color(inp1.color()._array[0],inp1.color()._array[1],inp1.color()._array[2],0.5);
+  cl1 = col;
   var drip = random(10);
   var dmax = 0;
 
@@ -109,16 +153,18 @@ r = rect(0,0,width, 5000);
      	vertex(path[j].x, path[j].y);
         if ( path[j].dm <  path[j].dr)
         	path[j].dm = path[j].dm + 0.1;
-     	for (var k = 0; k < path[j].dr; k++) {
+     	
+     		stroke(path[j].z);
      		line(path[j].x, path[j].y,path[j].x, path[j].y + path[j].dm)
-  		}
+  		
     }
     endShape();
   }
 }
 
 function saveDrawing() {
-  var ref = database.ref('drawings');
+  saveCanvas('myCanvas', 'jpg');
+ /* var ref = database.ref('drawings');
   var data = {
     name: 'Dan',
     drawing: drawing
@@ -128,7 +174,7 @@ function saveDrawing() {
 
   function dataSent(err, status) {
     console.log(status);
-  }
+  }*/
 }
 
 function gotData(data) {
