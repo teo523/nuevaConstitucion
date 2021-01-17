@@ -9,6 +9,20 @@
   
 </head>
 
+
+<style type="text/css">
+  
+  #blinkText {
+  animation: blinker 1s linear 6s;
+  color: white;
+
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
+</style>
+
 <body>
   <div id ="canvascontainer" style="background-image: url('assets/images/concrete.jpg');"></div>
 
@@ -16,6 +30,13 @@
     <button id="saveButton" style="z-index: 1000">save</button>
     <button id="clearButton">clear</button>
   </p>
+  
+  <div id="blinkText">
+   <p> 
+  Muro de la persona que te invitó
+   </p>
+   <img src="assets/images/arrow.png" width="40">
+  </div>
 
   <p>
     <ol id="drawinglist">

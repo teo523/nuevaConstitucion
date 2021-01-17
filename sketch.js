@@ -15,8 +15,10 @@ var isDrawing = false;
 let img;
 let preImg;
 let fltImg;
+let cutImg;
 let c;
 let bool = 0;
+let blinkTxt;
 
 function preload() {
   img = loadImage('assets/images/concrete.jpg');
@@ -25,20 +27,33 @@ function preload() {
 }
 
 function setup() {
+  if (windowWidth > windowHeight)
   canvas = createCanvas(windowWidth, windowHeight);
+
+  else
+  canvas = createCanvas(windowWidth, windowWidth);
 
   canvas.mousePressed(startPath);
   canvas.parent('canvascontainer');
   canvas.mouseReleased(endPath);
-  canvas.position(0,0);
+  if (windowWidth > windowHeight)
+    canvas.position(0,0);
 
-  
+  else {
+    canvas.position(0,(windowHeight-height)/2);
+  }
 
+  img.resize(width,height);
+  preImg.resize(width,height);
 
+  blinkTxt = select('#blinkText');
+  blinkTxt.position(10,100);
+  blinkTxt.hide();
   var inpt = createElement("textarea","");
   var ht = windowHeight;
   inp1 = createColorPicker('#ff0000');
   inp1.position(0,0);
+  inp1.style("height","50px");
   //inpt.style("line-height", "4ch");
   //inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
   inpt.style("background","transparent");
@@ -52,13 +67,17 @@ function setup() {
   inpt.style("width", width);
   inpt.style("height", "50px");
   inpt.style("font-size", "20px");
+  if (windowWidth > windowHeight)
   inpt.position(0,height - 50);
+
+  else
+  inpt.position(0,(windowHeight-height)/2+height - 50);
 
 
   //cursor('assets/images/curs.png');
   var saveButton = select('#saveButton');
   saveButton.mousePressed(saveDrawing);
-  saveButton.position(0,100);
+  saveButton.position(0,50);
   saveButton.style("z-index","1000");
 
   var clearButton = select('#clearButton');
@@ -90,6 +109,7 @@ function setup() {
 }
 
 function startPath() {
+  if (mouseX > width/3 - width/20 && mouseX < 2*width/3 + width/20)
   isDrawing = true;
   currentPath = [];
   drawing.push(currentPath);
@@ -111,17 +131,21 @@ background(img);
 
 
 if(bool == 0){
-c = preImg.get(preImg.width/3,0,preImg.width/3-100,preImg.height);
+c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
 d = get(2*width/3,0,width/3,height);
+c.resize(width/3-width/20,height);
+d.resize(width/3,height);
 c.filter(BLUR,20);
 d.filter(BLUR,20);
 
 bool ++;
 }
-let cutImg = preImg.get(preImg.width/3,0,preImg.width/3+100,preImg.height);
+cutImg = preImg.get(preImg.width/3,0,preImg.width/3+50,preImg.height);
 image(cutImg,0,0);
+
+
 image(c,0,0);
-image(d,2*width/3+100,0);
+image(d,2*width/3+width/20,0,width/3,height);
 
 r = rect(0,0,width, 5000);
   colorMode(RGB, 1, 1, 1, 1);
@@ -130,7 +154,7 @@ r = rect(0,0,width, 5000);
   var drip = random(10);
   var dmax = 0;
 
-  if (isDrawing) {
+  if (isDrawing && (mouseX > width/3 - width/20 && mouseX < 2*width/3 + width/20)) {
     var point = {
       x: mouseX,
       y: mouseY,
@@ -160,6 +184,8 @@ r = rect(0,0,width, 5000);
     }
     endShape();
   }
+  //if (frameCount > 700)
+  //blinkTxt.hide();
 }
 
 function saveDrawing() {
