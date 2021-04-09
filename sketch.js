@@ -2,10 +2,24 @@
 // http://codingtra.in
 // http://patreon.com/codingtrain
 // Code for: https://youtu.be/RUSvMxxm_Jo
+
+//Giphy
+var api = "http://api.giphy.com/v1/stickers/search?";
+var apiKey = "&api_key=dc6zaTOxFJmzC";
+var query = "&q=unicorn";
+var url = api+apiKey+query;
+let gifMenu = 0;
+var blinkFirst = 1;
+var counter = 0;
+
 var inp1;
+var inpt;
+var gifButton;
+var saveButton;
 var cl1;
 var database;
 let v = 1.0 / 9.0;
+
 // kernel is the 3x3 matrix of normalized values
 let kernel = [[ v, v, v ], [ v, v, v ], [ v, v, v ]]; 
 
@@ -19,6 +33,8 @@ let cutImg;
 let c;
 let bool = 0;
 let blinkTxt;
+let searchTxt;
+let sendSearch;
 
 function preload() {
   img = loadImage('assets/images/concrete.jpg');
@@ -49,39 +65,52 @@ function setup() {
   blinkTxt = select('#blinkText');
   blinkTxt.position(10,100);
   blinkTxt.hide();
-  var inpt = createElement("textarea","");
+
+  searchTxt = createInput('');
+  searchTxt.hide();
+  sendSearch = createButton("Buscar");
+  sendSearch.hide();
+  sendSearch.mousePressed(sendQuery); 
+  
+  inpt = createElement("textarea","");
   var ht = windowHeight;
   inp1 = createColorPicker('#ff0000');
-  inp1.position(0,0);
-  inp1.style("height","50px");
+
+  inp1.style("height","50");
+   inp1.style("width","50");
+     inp1.position(0,height-inp1.height);
   //inpt.style("line-height", "4ch");
   //inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
-  inpt.style("background","transparent");
-  inpt.style("background-image","url('assets/images/patch.png')");
+  //inpt.style("background","transparent");
+  //inpt.style("background-image","url('assets/images/patch.png')");
   
-  inpt.style("background-repeat","repeat-x");
-  inpt.style("background-size","auto 100%");
-  inpt.style("color","black");
+  //inpt.style("background-repeat","repeat-x");
+  //inpt.style("background-size","auto 100%");
+  //inpt.style("color","black");
   //min-height:50px;margin-top:-40px;padding-bottom:40px");
   //inpt.style("background-size","100% 4ch");
-  inpt.style("width", width);
-  inpt.style("height", "50px");
-  inpt.style("font-size", "20px");
-  if (windowWidth > windowHeight)
-  inpt.position(0,height - 50);
+  // inpt.style("width", width);
+  // inpt.style("height", "50px");
+  // inpt.style("font-size", "20px");
+  // if (windowWidth > windowHeight)
+  // inpt.position(0,height - 50);
 
-  else
-  inpt.position(0,(windowHeight-height)/2+height - 50);
+  // else
+  // inpt.position(0,(windowHeight-height)/2+height - 50);
 
 
   //cursor('assets/images/curs.png');
-  var saveButton = select('#saveButton');
-  saveButton.mousePressed(saveDrawing);
-  saveButton.position(0,50);
-  saveButton.style("z-index","1000");
+  // saveButton = select('#saveButton');
+  // saveButton.mousePressed(saveDrawing);
+  // saveButton.position(0,200);
+  // saveButton.style("z-index","1000");
 
-  var clearButton = select('#clearButton');
-  clearButton.mousePressed(clearDrawing);
+  gifButton = select('#gifButton');
+  gifButton.mousePressed(openGif);
+  gifButton.style("z-index","1000");
+  gifButton.style("height","50");
+  gifButton.style("width","50");
+  gifButton.position(inp1.width,height-gifButton.height);
 
  var firebaseConfig = {
     apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
@@ -106,6 +135,9 @@ function setup() {
 
   var ref = database.ref('drawings');
   ref.on('value', gotData, errData);
+
+
+  
 }
 
 function startPath() {
@@ -128,15 +160,13 @@ background(img);
 
 
 
-
-
 if(bool == 0){
 c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
 d = get(2*width/3,0,width/3,height);
 c.resize(width/3-width/20,height);
 d.resize(width/3,height);
-c.filter(BLUR,20);
-d.filter(BLUR,20);
+c.filter(BLUR,15);
+d.filter(BLUR,15);
 
 bool ++;
 }
@@ -184,8 +214,72 @@ r = rect(0,0,width, 5000);
     }
     endShape();
   }
-  //if (frameCount > 700)
-  //blinkTxt.hide();
+
+if (gifMenu){
+  push();
+  stroke(0);
+  fill(255);
+  var gifDiv = createDiv();
+  gifDiv.position(0,0);
+  gifDiv.id("gif");
+  gifDiv.style("width","30");
+  gifDiv.style("height","30");
+  gifDiv.style("background-color","black");
+  gifDiv.style("z-index","3000");
+  gifDiv.parent("#canvascontainer");
+  searchTxt.parent("#gif");
+
+  gifMenu=0;
+
+  //rect(0,0,width/3,height);
+  pop();
+}
+
+if (blinkFirst < 4 && counter < 50) {
+push();
+strokeWeight(2);
+textSize(32);
+textFont('Arial');
+text("Muro de Claudia",cutImg.width/6,cutImg.height/2);
+drawingContext.setLineDash([5, 15]);
+fill(255,0,0,0.1);
+rect(0,0,cutImg.width,cutImg.height);  
+pop();
+if (counter == 0)
+blinkFirst++;
+}
+
+if (blinkFirst >= 4 && blinkFirst < 8 && counter < 50) {
+push();
+strokeWeight(2);
+textSize(32);
+textFont('Arial');
+text("Tu Muro",cutImg.width + cutImg.width/6,cutImg.height/2);
+drawingContext.setLineDash([5, 15]);
+fill(100,0,255,0.1);
+rect(width/3-width/20,0,width - 2 * (width/3-width/20),cutImg.height);  
+pop();
+if (counter == 0)
+blinkFirst++;
+}
+
+if (blinkFirst >= 8 && blinkFirst < 12 && counter < 50) {
+push();
+strokeWeight(2);
+textSize(32);
+textFont('Arial');
+text("Muro de tu invitad@",(width - (width/3-width/20)),cutImg.height/2);
+drawingContext.setLineDash([5, 15]);
+fill(0,0,255,0.1);
+rect(width - (width/3),0,width/3,cutImg.height);  
+pop();
+if (counter == 0)
+blinkFirst++;
+}
+
+counter++;
+if (counter == 100)
+counter = 0;
 }
 
 function saveDrawing() {
@@ -215,7 +309,7 @@ function gotData(data) {
   for (var i = 0; i < keys.length; i++) {
     var key = keys[i];
     //console.log(key);
-    var li = createElement('li', '');
+    /*var li = createElement('li', '');
     li.class('listing');
     var ahref = createA('#', key);
     ahref.mousePressed(showDrawing);
@@ -225,12 +319,57 @@ function gotData(data) {
     perma.parent(li);
     perma.style('padding', '4px');
 
-    li.parent('drawinglist');
+    li.parent('drawinglist');*/
   }
 }
 
 function errData(err) {
   console.log(err);
+}
+
+function openGif(){
+//inpt.hide();
+gifButton.hide();
+inp1.hide();
+//saveButton.hide();
+gifMenu=1;
+searchTxt.show();
+searchTxt.position(10,100);
+sendSearch.show();
+sendSearch.position(10,130);
+}
+
+function sendQuery() {
+  url = api+apiKey+"&q="+searchTxt.value();
+  loadJSON(url, gotGiphy);
+}
+
+function gotGiphy(giphy){
+  var absH = 130;
+  console.log(giphy);
+  for (var i = 0; i< 10; i++){
+  createImg(giphy.data[i].images.original.url,imgG =>{
+  console.log("height="+imgG.height);
+  console.log("absH="+absH);
+  
+
+  imgG.position(10,absH);
+  let r = imgG.height/imgG.width;
+  console.log("r="+r);
+  console.log("w="+width);
+  imgG.style("width",JSON.stringify(floor(width/5)));
+  console.log("width="+imgG.width);
+  imgG.style("z-index","1000");
+  imgG.style("opacity","0.7");
+  imgG.class("images");
+  dragElement(imgG.elt);
+  
+  absH = absH+imgG.width*r;
+
+    });
+
+
+}
 }
 
 function showDrawing(key) {
@@ -252,3 +391,4 @@ function showDrawing(key) {
 function clearDrawing() {
   drawing = [];
 }
+

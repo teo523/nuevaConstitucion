@@ -10,13 +10,21 @@
 </head>
 
 
+
 <style type="text/css">
   
   #blinkText {
-  animation: blinker 1s linear 6s;
+  position: absolute;
+  animation: blinker 1s linear infinite;
   color: white;
 
 }
+  .images {
+  position: absolute;
+
+}
+ 
+ 
 
 @keyframes blinker {  
   50% { opacity: 0; }
@@ -26,21 +34,77 @@
 <body>
   <div id ="canvascontainer" style="background-image: url('assets/images/concrete.jpg');"></div>
 
-  <p>
-    <button id="saveButton" style="z-index: 1000">save</button>
-    <button id="clearButton">clear</button>
-  </p>
+
+    <button id="saveButton" style="z-index: 1000">Guardar</button>
+    <button onclick="dragAll()" id="gifButton" >GIF</button>
   
-  <div id="blinkText">
+  
+  <div id="blinkText" style="z-index: 1000">
    <p> 
   Muro de la persona que te invitó
    </p>
    <img src="assets/images/arrow.png" width="40">
   </div>
 
-  <p>
-    <ol id="drawinglist">
 
-    </ol>
+   <!-- <ol id="drawinglist">
+
+    </ol>-->
+  <script type="text/javascript">
+  
+  // Make the DIV element draggable:
+
+
+onclick = dragAll;
+
+
+function dragAll(){
+var imgs = document.getElementsByClassName("images");
+for (i = 0;i<10;i++){
+dragElement(imgs.item(i));
+}
+}
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
 </body>
 </html>
