@@ -4,7 +4,7 @@
 // Code for: https://youtu.be/RUSvMxxm_Jo
 
 //Giphy
-var api = "http://api.giphy.com/v1/stickers/search?";
+var api = "https://api.giphy.com/v1/stickers/search?";
 var apiKey = "&api_key=dc6zaTOxFJmzC";
 var query = "&q=unicorn";
 var url = api+apiKey+query;
