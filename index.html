@@ -25,9 +25,36 @@
 
 <style>
 
+body {
+
+  background-image: url('./assets/images/CE_home.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;  
+  background-size: cover;
+
+
+        /*background-size: cover;*/
+        
+
+}
 p {
   color: white;
 }  
+
+input {
+
+  height: 30px;
+  color: black;
+  
+  font-size: 16px;
+}
+
+
+#container{width:100%;}
+#left{float:left;width:25%;}
+#right{float:right;width:25%;}
+#center{margin:0 auto;width:100px;}
+
 #dropzone {
 border-style: dashed;
         display: block;
@@ -56,11 +83,8 @@ border-style: dashed;
 }
 </style> 
 
-<body class="minimal">
-<div id="site-border-left"></div>
-<div id="site-border-right"></div>
-<div id="site-border-top"></div>
-<div id="site-border-bottom"></div>
+<body>
+
 <!-- Add your content of header -->
 <header>
  <!--  <nav class="navbar  navbar-fixed-top navbar-inverse">
@@ -88,38 +112,50 @@ border-style: dashed;
   </nav> -->
 </header>
 <!-- Add your site or app content here -->
-  <div class="hero-full-container background-image-container white-text-container" style="background-image: url('./assets/images/sami2.jpg')">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="hero-full-wrapper">
-
-            <div class="text-content">
-
-
-              <h1 id="welcome"><a href="./draw.html">Bienvenid@s!</a><br>
-                <span id="typed-strings">
-                  <span>Estamos trabajando por nuestro futuro!</span>
-                 
-                  
-                </span>
-                <span id="typed"></span>
-
-              </h1>
+  <div id="container">
+    <div id="left" style="font-size: 1vw;">
+         <p> 
+          Hola <br>
+          Estás en el Cadáver Exquisito Constitucional de Chile <br>
+          ¿Qué es eso?<br>
+          Un gran muro colectivo para escribir libremente lo que creas que debe ir en la nueva Constitución.<br>
+          Podrás ver el final del escrito y rayado de otrx participante. <br> Utiliza este como tu inicio para continuar escribiendo
+          y rayando la nueva Constitución.<br>
+          El final de tu rayado también será el inicio <br>
+          de quien participe después de ti.<br>
+          IMPORTANTE: ESTO ES ANONIMO <br> Después de participar podrás ver el muro completo
+      </p>   
+    </div>
+    <div id="right">
+    
              
-            </div>
-          </div>
-        </div>
-      </div>
+              <p>Nombre o Apodo:</p>
+              <input type="text" id="fname" name="fname"><br><br>
+              <p>Código:</p>
+              <input type="text" id="userKey" name="userKey"><br><br>
+              <a href="./draw.html"><button onclick="storeKey()">EMPEZAR</button></a>
+           
+
     </div>
 
   </div>
 
 <script>
+  var selValue;
+  var userName;
   document.addEventListener("DOMContentLoaded", function (event) {
      type();
      //movingBackgroundImage();
   });
+
+  function storeKey(){
+    selValue = document.getElementById("userKey").value
+    userName = document.getElementById("fname").value
+    localStorage.setItem('uKey',selValue);
+    localStorage.setItem('uName',userName);
+
+  }
+
 </script>
 
 

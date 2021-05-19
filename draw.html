@@ -21,8 +21,11 @@
 }
   .images {
   position: absolute;
-
+  clip-path: inset(10px 20px 30px 40px);
 }
+  .myimg {
+    clip-path: inset(10px 20px 30px 40px);
+  }
  
  
 
@@ -34,6 +37,9 @@
 <body>
   <div id ="canvascontainer" style="background-image: url('assets/images/concrete.jpg');"></div>
 
+  <div id="images" style="z-index: 1000">
+  <img id="myimg" hidden style="z-index: 3000">
+  <div>
 
     <button id="saveButton" style="z-index: 1000">Guardar</button>
     <button onclick="dragAll()" id="gifButton" >GIF</button>
@@ -54,6 +60,41 @@
   
   // Make the DIV element draggable:
 
+var imgRef;
+
+firebaseConfig = {
+    apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
+    authDomain: "nueva-constitucion.firebaseapp.com",
+    databaseURL: "https://nueva-constitucion-default-rtdb.firebaseio.com",
+    projectId: "nueva-constitucion",
+    storageBucket: "nueva-constitucion.appspot.com",
+    messagingSenderId: "197438903025",
+    appId: "1:197438903025:web:f7bb1385df1724038c0f50",
+    measurementId: "G-VNK3XJS5Z5"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var database = firebase.database();
+  var storageRef = firebase.storage().ref(); 
+
+  
+
+  var ref = database.ref('drawings');
+  ref.on('value', gotData, errData);
+
+ var inptKey = localStorage.uKey;
+storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function(url) {
+  // `url` is the download URL for 'images/stars.jpg'
+
+  // This can be downloaded directly:
+  console.log("hi");
+
+  // Or inserted into an <img> element:
+  imgRef = document.getElementById('myimg');
+  imgRef.src = url;
+}).catch(function(error) {
+  // Handle any errors
+});
 
 onclick = dragAll;
 
@@ -105,6 +146,10 @@ function dragElement(elmnt) {
     document.onmousemove = null;
   }
 }
+
+
+
+
 </script>
 </body>
 </html>

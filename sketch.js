@@ -11,6 +11,11 @@ var url = api+apiKey+query;
 let gifMenu = 0;
 var blinkFirst = 1;
 var counter = 0;
+var trimmed;
+var imgCreated = 0;
+var userKey = "CE";
+var letters = ['a','b','c','d','e','f',1 ,2,3,4,5,6,7,8,9,0];
+
 
 var inp1;
 var inpt;
@@ -60,7 +65,7 @@ function setup() {
   }
 
   img.resize(width,height);
-  preImg.resize(width,height);
+  //preImg.resize(width,height);
 
   blinkTxt = select('#blinkText');
   blinkTxt.position(10,100);
@@ -100,10 +105,10 @@ function setup() {
 
 
   //cursor('assets/images/curs.png');
-  // saveButton = select('#saveButton');
-  // saveButton.mousePressed(saveDrawing);
-  // saveButton.position(0,200);
-  // saveButton.style("z-index","1000");
+ saveButton = select('#saveButton');
+ saveButton.mousePressed(saveDrawing);
+ saveButton.position(0,200);
+ saveButton.style("z-index","1000");
 
   gifButton = select('#gifButton');
   gifButton.mousePressed(openGif);
@@ -112,7 +117,7 @@ function setup() {
   gifButton.style("width","50");
   gifButton.position(inp1.width,height-gifButton.height);
 
- var firebaseConfig = {
+ /*firebaseConfig = {
     apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
     authDomain: "nueva-constitucion.firebaseapp.com",
     databaseURL: "https://nueva-constitucion-default-rtdb.firebaseio.com",
@@ -125,6 +130,7 @@ function setup() {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   database = firebase.database();
+  storageRef = firebase.storage().ref(); 
 
   var params = getURLParams();
   console.log(params);
@@ -133,11 +139,11 @@ function setup() {
     showDrawing(params.id);
   }
 
-  var ref = database.ref('drawings');
+  ref = database.ref('drawings');
   ref.on('value', gotData, errData);
 
+*/
 
-  
 }
 
 function startPath() {
@@ -158,24 +164,34 @@ stroke(0);
 
 background(img);
 
-
+if(localStorage.uKey == undefined){
+	saveButton.hide();
+}
 
 if(bool == 0){
-c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
+//c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
 d = get(2*width/3,0,width/3,height);
-c.resize(width/3-width/20,height);
+//c.resize(width/3-width/20,height);
 d.resize(width/3,height);
-c.filter(BLUR,15);
+//c.filter(BLUR,15);
 d.filter(BLUR,15);
 
 bool ++;
 }
-cutImg = preImg.get(preImg.width/3,0,preImg.width/3+50,preImg.height);
-image(cutImg,0,0);
 
-
-image(c,0,0);
+//blurred rectangle at the left
+//image(c,0,0);
+//blurred rect at right
 image(d,2*width/3+width/20,0,width/3,height);
+//previous image to be added at left
+cutImg = preImg.get(preImg.width/3,0,preImg.width/3+50,preImg.height);
+//image(cutImg,0,0);
+
+
+
+if (imgRef != null && imgCreated == 0){
+loadDrawing();
+}
 
 r = rect(0,0,width, 5000);
   colorMode(RGB, 1, 1, 1, 1);
@@ -242,7 +258,8 @@ textSize(32);
 textFont('Arial');
 text("Muro de Claudia",cutImg.width/6,cutImg.height/2);
 drawingContext.setLineDash([5, 15]);
-fill(255,0,0,0.1);
+strokeWeight(5);
+fill(255,0,0,0);
 rect(0,0,cutImg.width,cutImg.height);  
 pop();
 if (counter == 0)
@@ -256,7 +273,8 @@ textSize(32);
 textFont('Arial');
 text("Tu Muro",cutImg.width + cutImg.width/6,cutImg.height/2);
 drawingContext.setLineDash([5, 15]);
-fill(100,0,255,0.1);
+strokeWeight(5);
+fill(100,0,255,0);
 rect(width/3-width/20,0,width - 2 * (width/3-width/20),cutImg.height);  
 pop();
 if (counter == 0)
@@ -270,7 +288,8 @@ textSize(32);
 textFont('Arial');
 text("Muro de tu invitad@",(width - (width/3-width/20)),cutImg.height/2);
 drawingContext.setLineDash([5, 15]);
-fill(0,0,255,0.1);
+strokeWeight(5);
+fill(0,0,255,0);
 rect(width - (width/3),0,width/3,cutImg.height);  
 pop();
 if (counter == 0)
@@ -282,19 +301,77 @@ if (counter == 100)
 counter = 0;
 }
 
+function loadDrawing() {
+console.log(imgRef.src);
+//Creates two images from the previous participant: 
+//imgBlurred will take the central rectandle, blur it and put it in the left side of the screen
+//imgVisible will take the central rectandle, and put it in the left side of the screen
+let imgVisible=createImg(imgRef.src);
+let imgBlurred=createImg(imgRef.src);
+
+imgVisible.parent("#canvascontainer");
+imgVisible.style("width",width);
+imgVisible.style("height",height);
+imgVisible.style("clip-path","inset(0% 30% 0% 30%)");
+imgVisible.position(-width/3,0);
+
+imgCreated = 1;
+imgBlurred.parent("#canvascontainer");
+imgBlurred.style("width",width);
+imgBlurred.style("height",height);
+imgBlurred.style("filter","blur(20px)");
+imgBlurred.style("clip-path","inset(0% 38% 0% 30%)");
+imgBlurred.position(-width/3,0);
+
+}
+
+//Saves userName and key to database and then saves canvas with the name "(userKey).jpg" in storageRef/images/
 function saveDrawing() {
-  saveCanvas('myCanvas', 'jpg');
- /* var ref = database.ref('drawings');
+
+//Create a random 9 char key
+for (let i = 0; i < 9; i++) {
+  userKey = userKey + random(letters);
+}
+
+console.log(userKey);
+var userName = localStorage.uName;
+var parent = localStorage.uKey;
+var ref = database.ref('drawings');
   var data = {
-    name: 'Dan',
-    drawing: drawing
+    name: userName,
+    userKey: userKey,
+    parent: parent
   };
+
+  localStorage.removeItem("uKey");
+  localStorage.removeItem("uName");
   var result = ref.push(data, dataSent);
   console.log(result.key);
 
   function dataSent(err, status) {
     console.log(status);
-  }*/
+  }
+
+var storageRef = firebase.storage().ref();
+var childRef = storageRef.child("/images/" + userKey + ".jpg");
+
+var canvas0 = document.getElementById('defaultCanvas0');
+
+canvas0.toBlob(function(blob) {
+       // use the Blob or File API
+childRef.put(blob).then(function(snapshot) {
+  console.log('Uploaded a blob or file!');
+});
+
+});
+
+alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
+
+
+saveButton.hide();
+
+
+
 }
 
 function gotData(data) {
@@ -327,6 +404,12 @@ function errData(err) {
   console.log(err);
 }
 
+
+
+
+
+
+//----GIPHY STUFF (NOT YET IMPLEMENTED)----//
 function openGif(){
 //inpt.hide();
 gifButton.hide();
@@ -372,23 +455,6 @@ function gotGiphy(giphy){
 }
 }
 
-function showDrawing(key) {
-  //console.log(arguments);
-  if (key instanceof MouseEvent) {
-    key = this.html();
-  }
 
-  var ref = database.ref('drawings/' + key);
-  ref.once('value', oneDrawing, errData);
 
-  function oneDrawing(data) {
-    var dbdrawing = data.val();
-    drawing = dbdrawing.drawing;
-    //console.log(drawing);
-  }
-}
-
-function clearDrawing() {
-  drawing = [];
-}
 
