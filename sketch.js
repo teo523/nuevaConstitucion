@@ -320,7 +320,7 @@ imgBlurred.parent("#canvascontainer");
 imgBlurred.style("width",width);
 imgBlurred.style("height",height);
 imgBlurred.style("filter","blur(20px)");
-imgBlurred.style("clip-path","inset(0% 38% 0% 30%)");
+imgBlurred.style("clip-path","inset(0% 42% 0% 30%)");
 imgBlurred.position(-width/3,0);
 
 }
