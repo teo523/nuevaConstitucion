@@ -27,7 +27,7 @@
     clip-path: inset(10px 20px 30px 40px);
   }
  
- 
+
 
 @keyframes blinker {  
   50% { opacity: 0; }
@@ -35,22 +35,22 @@
 </style>
 
 <body>
-  <div id ="canvascontainer" style="background-image: url('assets/images/concrete.jpg');"></div>
-
-  <div id="images" style="z-index: 1000">
-  <img id="myimg" hidden style="z-index: 3000">
-  <div>
+  <div id ="canvascontainer"></div>
+    <div id="images" style="z-index: 1000">
+      <img id="myimg" hidden style="z-index: 3000">
+      <div>
 
     <button id="saveButton" style="z-index: 1000">Guardar</button>
     <button onclick="dragAll()" id="gifButton" >GIF</button>
   
-  
-  <div id="blinkText" style="z-index: 1000">
+      </div>
+  </div>
+  <!-- <div id="blinkText" style="z-index: 1000">
    <p> 
   Muro de la persona que te invitó
    </p>
    <img src="assets/images/arrow.png" width="40">
-  </div>
+  </div> -->
 
 
    <!-- <ol id="drawinglist">
@@ -88,7 +88,7 @@ storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function(u
 
   // This can be downloaded directly:
   console.log("hi");
-
+  document.getElementById('myimg').ondragstart = function() { return false; };
   // Or inserted into an <img> element:
   imgRef = document.getElementById('myimg');
   imgRef.src = url;
@@ -96,7 +96,7 @@ storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function(u
   // Handle any errors
 });
 
-onclick = dragAll;
+
 
 
 function dragAll(){

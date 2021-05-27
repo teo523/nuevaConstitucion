@@ -15,6 +15,7 @@ var trimmed;
 var imgCreated = 0;
 var userKey = "CE";
 var letters = ['a','b','c','d','e','f',1 ,2,3,4,5,6,7,8,9,0];
+var d;
 
 
 var inp1;
@@ -34,10 +35,8 @@ var isDrawing = false;
 let img;
 let preImg;
 let fltImg;
-let cutImg;
 let c;
 let bool = 0;
-let blinkTxt;
 let searchTxt;
 let sendSearch;
 
@@ -67,9 +66,8 @@ function setup() {
   img.resize(width,height);
   //preImg.resize(width,height);
 
-  blinkTxt = select('#blinkText');
-  blinkTxt.position(10,100);
-  blinkTxt.hide();
+
+ 
 
   searchTxt = createInput('');
   searchTxt.hide();
@@ -157,81 +155,40 @@ function endPath() {
   isDrawing = false;
 }
 
+
+
 function draw() {
-stroke(0);
 
+  stroke(0);
 
+  background(img);
 
-background(img);
+  //If user key is incorrect, user can't save
+  if(localStorage.uKey == undefined){
+  	saveButton.hide();
+  }
 
-if(localStorage.uKey == undefined){
-	saveButton.hide();
-}
+  //if the image was loead from storage, then put it in the canvas
+  if (imgRef != null && imgCreated == 0){
+  loadDrawing();
+  }
 
-if(bool == 0){
-//c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
-d = get(2*width/3,0,width/3,height);
-//c.resize(width/3-width/20,height);
-d.resize(width/3,height);
-//c.filter(BLUR,15);
-d.filter(BLUR,15);
-
-bool ++;
-}
-
-//blurred rectangle at the left
-//image(c,0,0);
-//blurred rect at right
-image(d,2*width/3+width/20,0,width/3,height);
-//previous image to be added at left
-cutImg = preImg.get(preImg.width/3,0,preImg.width/3+50,preImg.height);
-//image(cutImg,0,0);
-
-
-
-if (imgRef != null && imgCreated == 0){
-loadDrawing();
-}
-
-r = rect(0,0,width, 5000);
-  colorMode(RGB, 1, 1, 1, 1);
-  var col = color(inp1.color()._array[0],inp1.color()._array[1],inp1.color()._array[2],0.5);
-  cl1 = col;
-  var drip = random(10);
-  var dmax = 0;
-
+  
+  //add new point if mouse pressed
   if (isDrawing && (mouseX > width/3 - width/20 && mouseX < 2*width/3 + width/20)) {
-    var point = {
-      x: mouseX,
-      y: mouseY,
-      z: col,
-      dr: drip,
-      dm: dmax
-    };
-    currentPath.push(point);
+    addPoint();
   }
 
-  stroke(255);
-  strokeWeight(4);
-  noFill();
-  for (var i = 0; i < drawing.length; i++) {
-    var path = drawing[i];
+  drawPoints();
 
-    beginShape();
-    for (var j = 0; j < path.length; j++) {
-    	stroke(path[j].z);
-     	vertex(path[j].x, path[j].y);
-        if ( path[j].dm <  path[j].dr)
-        	path[j].dm = path[j].dm + 0.1;
-     	
-     		stroke(path[j].z);
-     		line(path[j].x, path[j].y,path[j].x, path[j].y + path[j].dm)
-  		
-    }
-    endShape();
-  }
 
-if (gifMenu){
+  //blurred rectangle at the left
+  //image(c,0,0);
+  //blurred rect at right
+  if (d!=undefined)
+    image(d,2*width/3+width/20,0,width/3,height);
+
+  /*if (gifMenu){
   push();
   stroke(0);
   fill(255);
@@ -249,126 +206,178 @@ if (gifMenu){
 
   //rect(0,0,width/3,height);
   pop();
+  }
+  */
+
+  //TO ADD: INITIAL BLINK
+  /*
+  if (blinkFirst < 4 && counter < 50) {
+  push();
+  strokeWeight(2);
+  textSize(32);
+  textFont('Arial');
+  text("Muro de Claudia",width/10,height/2);
+  drawingContext.setLineDash([5, 15]);
+  strokeWeight(5);
+  fill(255,0,0,0);
+  rect(0,0,width/3,height);  
+  pop();
+  if (counter == 0)
+  blinkFirst++;
+  }
+
+  if (blinkFirst >= 4 && blinkFirst < 8 && counter < 50) {
+  push();
+  strokeWeight(2);
+  textSize(32);
+  textFont('Arial');
+  text("Tu Muro",width/3 + width/10,height/2);
+  drawingContext.setLineDash([5, 15]);
+  strokeWeight(5);
+  fill(100,0,255,0);
+  rect(width/3-width/20,0,width - 2 * (width/3-width/20),height);  
+  pop();
+  if (counter == 0)
+  blinkFirst++;
+  }
+
+  if (blinkFirst >= 8 && blinkFirst < 12 && counter < 50) {
+  push();
+  strokeWeight(2);
+  textSize(32);
+  textFont('Arial');
+  text("Muro de tu invitad@",(width - (width/3-width/20)),height/2);
+  drawingContext.setLineDash([5, 15]);
+  strokeWeight(5);
+  fill(0,0,255,0);
+  rect(width - (width/3),0,width/3,height);  
+  pop();
+  if (counter == 0)
+  blinkFirst++;
+  }
+
+  counter++;
+  if (counter == 100)
+  counter = 0;
+*/
 }
 
-if (blinkFirst < 4 && counter < 50) {
-push();
-strokeWeight(2);
-textSize(32);
-textFont('Arial');
-text("Muro de Claudia",cutImg.width/6,cutImg.height/2);
-drawingContext.setLineDash([5, 15]);
-strokeWeight(5);
-fill(255,0,0,0);
-rect(0,0,cutImg.width,cutImg.height);  
-pop();
-if (counter == 0)
-blinkFirst++;
+function addPoint() {
+  colorMode(RGB, 1, 1, 1, 1);
+  var col = color(inp1.color()._array[0],inp1.color()._array[1],inp1.color()._array[2],0.5);
+  cl1 = col;
+  var drip = random(10);
+  var dmax = 0;
+  var point = {
+        x: mouseX,
+        y: mouseY,
+        z: col,
+        dr: drip,
+        dm: dmax
+      };
+  currentPath.push(point);
 }
 
-if (blinkFirst >= 4 && blinkFirst < 8 && counter < 50) {
-push();
-strokeWeight(2);
-textSize(32);
-textFont('Arial');
-text("Tu Muro",cutImg.width + cutImg.width/6,cutImg.height/2);
-drawingContext.setLineDash([5, 15]);
-strokeWeight(5);
-fill(100,0,255,0);
-rect(width/3-width/20,0,width - 2 * (width/3-width/20),cutImg.height);  
-pop();
-if (counter == 0)
-blinkFirst++;
-}
 
-if (blinkFirst >= 8 && blinkFirst < 12 && counter < 50) {
-push();
-strokeWeight(2);
-textSize(32);
-textFont('Arial');
-text("Muro de tu invitad@",(width - (width/3-width/20)),cutImg.height/2);
-drawingContext.setLineDash([5, 15]);
-strokeWeight(5);
-fill(0,0,255,0);
-rect(width - (width/3),0,width/3,cutImg.height);  
-pop();
-if (counter == 0)
-blinkFirst++;
-}
+function drawPoints() {
 
-counter++;
-if (counter == 100)
-counter = 0;
+  stroke(255);
+  strokeWeight(4);
+  noFill();
+  for (var i = 0; i < drawing.length; i++) {
+    var path = drawing[i];
+
+    beginShape();
+    for (var j = 0; j < path.length; j++) {
+      stroke(path[j].z);
+      vertex(path[j].x, path[j].y);
+        if ( path[j].dm <  path[j].dr)
+          path[j].dm = path[j].dm + 0.1;
+      
+        stroke(path[j].z);
+        line(path[j].x, path[j].y,path[j].x, path[j].y + path[j].dm)
+      
+    }
+    endShape();
+  }
 }
 
 function loadDrawing() {
-console.log(imgRef.src);
-//Creates two images from the previous participant: 
-//imgBlurred will take the central rectandle, blur it and put it in the left side of the screen
-//imgVisible will take the central rectandle, and put it in the left side of the screen
-let imgVisible=createImg(imgRef.src);
-let imgBlurred=createImg(imgRef.src);
 
-imgVisible.parent("#canvascontainer");
-imgVisible.style("width",width);
-imgVisible.style("height",height);
-imgVisible.style("clip-path","inset(0% 30% 0% 30%)");
-imgVisible.position(-width/3,0);
 
-imgCreated = 1;
-imgBlurred.parent("#canvascontainer");
-imgBlurred.style("width",width);
-imgBlurred.style("height",height);
-imgBlurred.style("filter","blur(20px)");
-imgBlurred.style("clip-path","inset(0% 42% 0% 30%)");
-imgBlurred.position(-width/3,0);
+    //c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
+  d = get(2*width/3,0,width/3,height);
+  //c.resize(width/3-width/20,height);
+  d.resize(width/3,height);
+  //c.filter(BLUR,15);
+  d.filter(BLUR,15);
+  console.log(imgRef.src);
+  //Creates two images from the previous participant: 
+  //imgBlurred will take the central rectandle, blur it and put it in the left side of the screen
+  //imgVisible will take the central rectandle, and put it in the left side of the screen
+  let imgVisible=createImg(imgRef.src);
+  let imgBlurred=createImg(imgRef.src);
 
-}
+  imgVisible.parent("#canvascontainer");
+  imgVisible.style("width",width);
+  imgVisible.style("height",height);
+  imgVisible.style("clip-path","inset(0% 30% 0% 30%)");
+  imgVisible.position(-width/3,0);
 
-//Saves userName and key to database and then saves canvas with the name "(userKey).jpg" in storageRef/images/
-function saveDrawing() {
+  imgCreated = 1;
+  imgBlurred.parent("#canvascontainer");
+  imgBlurred.style("width",width);
+  imgBlurred.style("height",height);
+  imgBlurred.style("filter","blur(20px)");
+  imgBlurred.style("clip-path","inset(0% 42% 0% 30%)");
+  imgBlurred.position(-width/3,0);
 
-//Create a random 9 char key
-for (let i = 0; i < 9; i++) {
-  userKey = userKey + random(letters);
-}
-
-console.log(userKey);
-var userName = localStorage.uName;
-var parent = localStorage.uKey;
-var ref = database.ref('drawings');
-  var data = {
-    name: userName,
-    userKey: userKey,
-    parent: parent
-  };
-
-  localStorage.removeItem("uKey");
-  localStorage.removeItem("uName");
-  var result = ref.push(data, dataSent);
-  console.log(result.key);
-
-  function dataSent(err, status) {
-    console.log(status);
   }
 
-var storageRef = firebase.storage().ref();
-var childRef = storageRef.child("/images/" + userKey + ".jpg");
+  //Saves userName and key to database and then saves canvas with the name "(userKey).jpg" in storageRef/images/
+  function saveDrawing() {
 
-var canvas0 = document.getElementById('defaultCanvas0');
+  //Create a random 9 char key
+  for (let i = 0; i < 9; i++) {
+    userKey = userKey + random(letters);
+  }
 
-canvas0.toBlob(function(blob) {
-       // use the Blob or File API
-childRef.put(blob).then(function(snapshot) {
-  console.log('Uploaded a blob or file!');
-});
+  console.log(userKey);
+  var userName = localStorage.uName;
+  var parent = localStorage.uKey;
+  var ref = database.ref('drawings');
+    var data = {
+      name: userName,
+      userKey: userKey,
+      parent: parent
+    };
 
-});
+    localStorage.removeItem("uKey");
+    localStorage.removeItem("uName");
+    var result = ref.push(data, dataSent);
+    console.log(result.key);
 
-alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
+    function dataSent(err, status) {
+      console.log(status);
+    }
+
+  var storageRef = firebase.storage().ref();
+  var childRef = storageRef.child("/images/" + userKey + ".jpg");
+
+  var canvas0 = document.getElementById('defaultCanvas0');
+
+  canvas0.toBlob(function(blob) {
+         // use the Blob or File API
+  childRef.put(blob).then(function(snapshot) {
+    console.log('Uploaded a blob or file!');
+  });
+
+  });
+
+  alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
 
 
-saveButton.hide();
+  saveButton.hide();
 
 
 
