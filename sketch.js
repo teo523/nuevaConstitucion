@@ -18,6 +18,7 @@ var letters = ['a','b','c','d','e','f',1 ,2,3,4,5,6,7,8,9,0];
 var d;
 
 
+
 var inp1;
 var inpt;
 var gifButton;
@@ -26,12 +27,11 @@ var cl1;
 var database;
 let v = 1.0 / 9.0;
 
-// kernel is the 3x3 matrix of normalized values
-let kernel = [[ v, v, v ], [ v, v, v ], [ v, v, v ]]; 
 
 var drawing = [];
 var currentPath = [];
 var isDrawing = false;
+var toDraw = 1;
 let img;
 let preImg;
 let fltImg;
@@ -67,7 +67,7 @@ function setup() {
   //preImg.resize(width,height);
 
 
- 
+  background(img);
 
   searchTxt = createInput('');
   searchTxt.hide();
@@ -161,7 +161,8 @@ function draw() {
 
   stroke(0);
 
-  background(img);
+  cursor('assets/images/Spray1.cur');
+  //background(img);
 
   //If user key is incorrect, user can't save
   if(localStorage.uKey == undefined){
@@ -179,6 +180,7 @@ function draw() {
     addPoint();
   }
 
+ if (drawing.length>0)
   drawPoints();
 
 
@@ -275,8 +277,13 @@ function addPoint() {
         dr: drip,
         dm: dmax
       };
+
   currentPath.push(point);
 }
+
+
+
+
 
 
 function drawPoints() {
@@ -284,8 +291,8 @@ function drawPoints() {
   stroke(255);
   strokeWeight(4);
   noFill();
-  for (var i = 0; i < drawing.length; i++) {
-    var path = drawing[i];
+
+    var path = drawing[drawing.length-1];
 
     beginShape();
     for (var j = 0; j < path.length; j++) {
@@ -299,8 +306,11 @@ function drawPoints() {
       
     }
     endShape();
-  }
+  
 }
+
+
+
 
 function loadDrawing() {
 

@@ -27,7 +27,7 @@
     clip-path: inset(10px 20px 30px 40px);
   }
  
-
+ body {cursor: url(http://www.rw-designer.com/cursor-extern.php?id=126860);}
 
 @keyframes blinker {  
   50% { opacity: 0; }
@@ -88,7 +88,7 @@ storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function(u
 
   // This can be downloaded directly:
   console.log("hi");
-  document.getElementById('myimg').ondragstart = function() { return false; };
+ 
   // Or inserted into an <img> element:
   imgRef = document.getElementById('myimg');
   imgRef.src = url;
