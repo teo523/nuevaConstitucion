@@ -23,6 +23,7 @@ var inp1;
 var inpt;
 var gifButton;
 var saveButton;
+// let modeButton
 var cl1;
 var database;
 let v = 1.0 / 9.0;
@@ -39,6 +40,9 @@ let c;
 let bool = 0;
 let searchTxt;
 let sendSearch;
+let mode = 'draw'
+// let mode = 'text'
+let textBox
 
 function preload() {
     img = loadImage('assets/images/concrete.jpg');
@@ -114,6 +118,13 @@ function setup() {
     gifButton.style("width", "50");
     gifButton.position(inp1.width, height - gifButton.height);
 
+    // Setup text/draw button, that calls changeMode on click
+    // modeButton = createButton('Text')
+    // modeButton.style("z-index", "1000");
+    // modeButton.style("height", "50");
+    // modeButton.style("width", "50");
+    // modeButton.position(500, 500);
+
     /*firebaseConfig = {
        apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
        authDomain: "nueva-constitucion.firebaseapp.com",
@@ -140,6 +151,15 @@ function setup() {
      ref.on('value', gotData, errData);
    
    */
+     textBox = {
+        pos: {x: width / 2, y: height / 2},
+        dragStartPos: {x: 0, y: 0},
+        w: 100,
+        h: 100,
+        text: 'ola k ase',
+        color: 'black',
+        size: 20
+    }
 
 }
 
@@ -242,19 +262,52 @@ function draw() {
   */
 }
 
+// Change UI state draw/text
+function changeMode(){
+    if(mode == 'text'){
+        mode = 'draw'
+    }
+    else if(mode == 'draw'){
+        mode = 'text'
+        drawText()
+    }
+}
+
 // Events to catch drawing gesture
 function mousePressed(){
-    startPath()
+    if(mode == 'draw') startPath()
+    else if(mode == 'text') {
+        if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
+            textBox.dragStartPos.x = mouseX
+            textBox.dragStartPos.y = mouseY
+        }
+    }
 }
 
 function mouseDragged(){
-    if (isDrawing && (mouseX > width / 3 - width / 20 && mouseX < 2 * width / 3 + width / 20)) {
-        addPoint();
+    if(mode == 'draw'){
+        if (isDrawing && (mouseX > width / 3 - width / 20 && mouseX < 2 * width / 3 + width / 20)) {
+            addPoint();
+        }
+    }
+    else if(mode == 'text') {
+        const deltaPos = {
+            x: mouseX - textBox.dragStartPos.x,
+            y: mouseY - textBox.dragStartPos.y
+        }
+        textBox.pos.x += deltaPos.x
+        textBox.pos.y += deltaPos.y
+        textBox.dragStartPos = {
+            x: mouseX,
+            y: mouseY
+        }
+        resetDrawToCurrent()
+        drawText()
     }
 }
 
 function mouseReleased(){
-    endPath()
+    if(mode == 'draw') endPath()
 }
 
 function startPath() {
@@ -336,6 +389,14 @@ function resetDrawToCurrent(){
             }
         })
     }
+}
+
+function drawText(){
+    strokeWeight(2)
+    stroke(0)
+    rect(textBox.pos.x, textBox.pos.y, textBox.w, textBox.h)
+    textSize(textBox.size)
+    text(textBox.text, textBox.pos.x, textBox.pos.y, textBox.w, textBox.h)
 }
 
 function loadDrawing() {
