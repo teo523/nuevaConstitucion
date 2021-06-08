@@ -1,17 +1,20 @@
 <html>
-<head>
-  <meta charset="UTF-8">
-  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
-  
-  <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
-  <script language="javascript" type="text/javascript" src="sketch.js"></script>
 
-  
+<head>
+    <meta charset="UTF-8">
+    <script language="javascript" type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
+    <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+
 </head>
 
 
 
 <style type="text/css">
+<<<<<<< HEAD
   
   #blinkText {
   position: absolute;
@@ -31,20 +34,48 @@
 @keyframes blinker {  
   50% { opacity: 0; }
 }
+=======
+    #blinkText {
+        position: absolute;
+        animation: blinker 1s linear infinite;
+        color: white;
+
+    }
+
+    .images {
+        position: absolute;
+        clip-path: inset(10px 20px 30px 40px);
+    }
+
+    .myimg {
+        clip-path: inset(10px 20px 30px 40px);
+    }
+
+    body {
+        cursor: url(http://www.rw-designer.com/cursor-extern.php?id=126860);
+    }
+
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+>>>>>>> 4d7492a0ae878abcc7db259d24c45d4785e92bfa
 </style>
 
 <body>
-  <div id ="canvascontainer"></div>
+    <div id="canvascontainer"></div>
     <div id="images" style="z-index: 1000">
-      <img id="myimg" hidden style="z-index: 3000">
-      <div>
+        <img id="myimg" hidden style="z-index: 3000">
+        <div>
 
-    <button id="saveButton" style="z-index: 1000">Guardar</button>
-    <button onclick="dragAll()" id="gifButton" >GIF</button>
-  
-      </div>
-  </div>
-  <!-- <div id="blinkText" style="z-index: 1000">
+            <button id="saveButton" style="z-index: 1000">Guardar</button>
+            <button onclick="dragAll()" id="gifButton">GIF</button>
+            <button id="modeButton" style="z-index: 1000">Text</button>
+
+        </div>
+    </div>
+    <!-- <div id="blinkText" style="z-index: 1000">
    <p> 
   Muro de la persona que te invitó
    </p>
@@ -52,103 +83,104 @@
   </div> -->
 
 
-   <!-- <ol id="drawinglist">
+    <!-- <ol id="drawinglist">
 
     </ol>-->
-  <script type="text/javascript">
-  
-  // Make the DIV element draggable:
+    <script type="text/javascript">
 
-var imgRef;
+        // Make the DIV element draggable:
 
-firebaseConfig = {
-    apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
-    authDomain: "nueva-constitucion.firebaseapp.com",
-    databaseURL: "https://nueva-constitucion-default-rtdb.firebaseio.com",
-    projectId: "nueva-constitucion",
-    storageBucket: "nueva-constitucion.appspot.com",
-    messagingSenderId: "197438903025",
-    appId: "1:197438903025:web:f7bb1385df1724038c0f50",
-    measurementId: "G-VNK3XJS5Z5"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  var database = firebase.database();
-  var storageRef = firebase.storage().ref(); 
+        var imgRef;
 
-  
-
-  var ref = database.ref('drawings');
-  ref.on('value', gotData, errData);
-
- var inptKey = localStorage.uKey;
-storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function(url) {
-  // `url` is the download URL for 'images/stars.jpg'
-
-  // This can be downloaded directly:
-  console.log("hi");
- 
-  // Or inserted into an <img> element:
-  imgRef = document.getElementById('myimg');
-  imgRef.src = url;
-}).catch(function(error) {
-  // Handle any errors
-});
+        firebaseConfig = {
+            apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
+            authDomain: "nueva-constitucion.firebaseapp.com",
+            databaseURL: "https://nueva-constitucion-default-rtdb.firebaseio.com",
+            projectId: "nueva-constitucion",
+            storageBucket: "nueva-constitucion.appspot.com",
+            messagingSenderId: "197438903025",
+            appId: "1:197438903025:web:f7bb1385df1724038c0f50",
+            measurementId: "G-VNK3XJS5Z5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+        var storageRef = firebase.storage().ref();
 
 
 
+        var ref = database.ref('drawings');
+        ref.on('value', gotData, errData);
 
-function dragAll(){
-var imgs = document.getElementsByClassName("images");
-for (i = 0;i<10;i++){
-dragElement(imgs.item(i));
-}
-}
+        var inptKey = localStorage.uKey;
+        storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function (url) {
+            // `url` is the download URL for 'images/stars.jpg'
 
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
+            // This can be downloaded directly:
+            console.log("hi");
 
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-  function closeDragElement() {
-    // stop moving when mouse button is released:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
+            // Or inserted into an <img> element:
+            imgRef = document.getElementById('myimg');
+            imgRef.src = url;
+        }).catch(function (error) {
+            // Handle any errors
+        });
 
 
 
 
-</script>
+        function dragAll() {
+            var imgs = document.getElementsByClassName("images");
+            for (i = 0; i < 10; i++) {
+                dragElement(imgs.item(i));
+            }
+        }
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                // if present, the header is where you move the DIV from:
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                // otherwise, move the DIV from anywhere inside the DIV:
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+
+
+
+    </script>
 </body>
+
 </html>
