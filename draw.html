@@ -30,6 +30,15 @@
     clip-path: inset(10px 20px 30px 40px);
   }
  
+ textarea{
+
+    color: white;
+    background-color: rgba(255, 217, 102,0.3);
+    
+    border: none;
+    outline: none;
+    border:solid 0.5px rgba(255, 217, 102,0.9);
+}
 
 @keyframes blinker {  
   50% { opacity: 0; }
@@ -65,11 +74,14 @@
 
 <body>
     <div id="canvascontainer"></div>
+    <textarea id="txt" rows="4" cols="50">
+    </textarea>
     <div id="images" style="z-index: 1000">
         <img id="myimg" hidden style="z-index: 3000">
         <div>
 
             <button id="saveButton" style="z-index: 1000">Guardar</button>
+            <button id="textButton" style="z-index: 1000">T</button>
             <button onclick="dragAll()" id="gifButton">GIF</button>
             <button id="modeButton" style="z-index: 1000">Text</button>
 
@@ -91,6 +103,8 @@
         // Make the DIV element draggable:
 
         var imgRef;
+        var movingTxt = 0;
+        var block = 0;
 
         firebaseConfig = {
             apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
@@ -176,6 +190,80 @@
                 document.onmousemove = null;
             }
         }
+
+    /*
+    const el = document.querySelector(".text");
+
+    el.addEventListener('mousedown',mousedown);
+
+    function mousedown(e){
+        window.addEventListener('mousemove',mousemove);
+        window.addEventListener('mouseup',mouseup);
+        movingTxt = 1;
+
+        let prevX = e.clientX;
+        let prevY = e.clientY;
+
+        function mousemove(e){
+
+            let newX = prevX - e.clientX;
+            let newY = prevY - e.clientY;
+
+            const rect = el.getBoundingClientRect();
+
+            el.style.left = rect.left - newX + "px";
+            el.style.top = rect.top - newY + "px";
+
+            prevX = e.clientX;
+            prevY = e.clientY;
+        }
+
+        function mouseup() {
+            window.removeEventListener('mousemove',mousemove);
+            window.removeEventListener('mouseup',mouseup);
+            movingTxt = 0;
+        }
+
+
+
+    } */
+
+    var textButton = document.getElementById("textButton");
+    var canvascontainer = document.getElementById("canvascontainer");
+    textButton.addEventListener("click",createTxt);
+
+    function createTxt() {
+        var x = document.createElement("TEXTAREA");
+        x.addEventListener('mouseover',blockCanvas,true);
+        x.addEventListener('mouseout',unblockCanvas,true);
+        canvascontainer.appendChild(x);
+        x.id = "inTxt"
+        movingTxt = 1;
+        
+        window.addEventListener('click',clicked2,true);
+
+        function clicked2() {
+            x.id = "inTxt2";
+            movingTxt = 0;
+            window.removeEventListener('click',clicked2);
+            
+
+
+        }
+
+
+
+    }
+
+    function blockCanvas() {
+        block = 1;
+    }
+
+    function unblockCanvas() {
+        block = 0;
+    }
+
+
 
 
 
