@@ -177,7 +177,7 @@ function draw() {
 
     stroke(0);
 
-    cursor('http://www.rw-designer.com/cursor-extern.php?id=12350');
+    cursor('assets/images/Spray1.cur');
     //background(img);
 
     if (movingTxt == 1){
