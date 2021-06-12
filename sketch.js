@@ -17,6 +17,7 @@ var userKey = "CE";
 var letters = ['a', 'b', 'c', 'd', 'e', 'f', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 var d;
 var inTxt;
+var textA;
 
 
 var inp1;
@@ -449,6 +450,20 @@ function loadDrawing() {
 //Saves userName and key to database and then saves canvas with the name "(userKey).jpg" in storageRef/images/
 function saveDrawing() {
 
+	//Create json with textarea info: x,y, width, height and text input
+	var jsonTxt = {};
+	textA = document.getElementsByClassName("text");
+	var i;
+	for (i = 0; i < textA.length; i++) {
+		jsonTxt[i]={};
+		jsonTxt[i].x = textA[i].getBoundingClientRect().x;
+		jsonTxt[i].y = textA[i].getBoundingClientRect().y;
+		jsonTxt[i].w = textA[i].getBoundingClientRect().width;
+		jsonTxt[i].h = textA[i].getBoundingClientRect().height;
+		jsonTxt[i].text = textA[i].value;
+
+	}
+
     //Create a random 9 char key
     for (let i = 0; i < 9; i++) {
         userKey = userKey + random(letters);
@@ -461,7 +476,9 @@ function saveDrawing() {
     var data = {
         name: userName,
         userKey: userKey,
-        parent: parent
+        parent: parent,
+        drawing: drawing,
+        text: jsonTxt
     };
 
     localStorage.removeItem("uKey");
