@@ -81,7 +81,7 @@ function setup() {
     sendSearch.hide();
     sendSearch.mousePressed(sendQuery);
 
-    inpt = createElement("textarea", "");
+    //inpt = createElement("textarea", "");
     var ht = windowHeight;
     inp1 = createColorPicker('#ff0000');
 
