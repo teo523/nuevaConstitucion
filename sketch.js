@@ -16,7 +16,8 @@ var imgCreated = 0;
 var userKey = "CE";
 var letters = ['a', 'b', 'c', 'd', 'e', 'f', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 var d;
-
+var inTxt;
+var textA;
 
 
 var inp1;
@@ -72,13 +73,15 @@ function setup() {
 
     background(img);
 
+    //inTxt = select("#txt");
+    //inTxt.position(100,200);
     searchTxt = createInput('');
     searchTxt.hide();
     sendSearch = createButton("Buscar");
     sendSearch.hide();
     sendSearch.mousePressed(sendQuery);
 
-    inpt = createElement("textarea", "");
+    //inpt = createElement("textarea", "");
     var ht = windowHeight;
     inp1 = createColorPicker('#ff0000');
 
@@ -111,13 +114,21 @@ function setup() {
     saveButton.position(0, 200);
     saveButton.style("z-index", "1000");
 
+
     gifButton = select('#gifButton');
     gifButton.mousePressed(openGif);
     gifButton.style("z-index", "1000");
     gifButton.style("height", "50");
     gifButton.style("width", "50");
-    gifButton.position(inp1.width, height - gifButton.height);
+    gifButton.position(inp1.width , height - gifButton.height);
 
+    textButton = select('#textButton');
+    textButton.style("z-index", "1000");
+    textButton.style("height", "50");
+    textButton.style("width", "50");
+    textButton.position(inp1.width + gifButton.width, height - gifButton.height);
+
+   
     // Setup text/draw button, that calls changeMode on click
     // modeButton = createButton('Text')
     // modeButton.style("z-index", "1000");
@@ -156,7 +167,7 @@ function setup() {
         dragStartPos: {x: 0, y: 0},
         w: 100,
         h: 100,
-        text: 'ola k ase',
+        text: 'ola k ase (mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){',
         color: 'black',
         size: 20
     }
@@ -170,6 +181,11 @@ function draw() {
     cursor('assets/images/Spray1.cur');
     //background(img);
 
+    if (movingTxt == 1){
+    var inTxt = select("#inTxt");
+    inTxt.position(mouseX,mouseY);
+
+	}
     //If user key is incorrect, user can't save
     if (localStorage.uKey == undefined) {
         saveButton.hide();
@@ -275,7 +291,7 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if(mode == 'draw') startPath()
+    if(mode == 'draw' && movingTxt == 0 && block == 0) startPath()
     else if(mode == 'text') {
         if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
             textBox.dragStartPos.x = mouseX
@@ -434,6 +450,20 @@ function loadDrawing() {
 //Saves userName and key to database and then saves canvas with the name "(userKey).jpg" in storageRef/images/
 function saveDrawing() {
 
+	//Create json with textarea info: x,y, width, height and text input
+	var jsonTxt = {};
+	textA = document.getElementsByClassName("text");
+	var i;
+	for (i = 0; i < textA.length; i++) {
+		jsonTxt[i]={};
+		jsonTxt[i].x = textA[i].getBoundingClientRect().x;
+		jsonTxt[i].y = textA[i].getBoundingClientRect().y;
+		jsonTxt[i].w = textA[i].getBoundingClientRect().width;
+		jsonTxt[i].h = textA[i].getBoundingClientRect().height;
+		jsonTxt[i].text = textA[i].value;
+
+	}
+
     //Create a random 9 char key
     for (let i = 0; i < 9; i++) {
         userKey = userKey + random(letters);
@@ -446,7 +476,9 @@ function saveDrawing() {
     var data = {
         name: userName,
         userKey: userKey,
-        parent: parent
+        parent: parent,
+        drawing: drawing,
+        text: jsonTxt
     };
 
     localStorage.removeItem("uKey");
