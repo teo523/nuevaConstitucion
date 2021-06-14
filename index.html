@@ -3,23 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-  <meta content="IE=edge" http-equiv="X-UA-Compatible">
-  <meta content="description" name="description">
-  <meta name="google" content="notranslate" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="description" name="description">
+    <meta name="google" content="notranslate" />
 
-  <!-- Disable tap highlight on IE -->
-  <meta name="msapplication-tap-highlight" content="no">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>nuevaConstitucion</title>
-
-
-
- 
-
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nuevaConstitucion</title>
+    <link rel="stylesheet" href="./assets/style.css" />
 </head>
 
 
-<style>
+<!-- <style>
 
 body {
 
@@ -77,13 +73,13 @@ border-style: dashed;
   cursor: pointer;
   text-align: left;
 }
-</style> 
+</style>  -->
 
 <body>
 
-<!-- Add your content of header -->
-<header>
- <!--  <nav class="navbar  navbar-fixed-top navbar-inverse">
+    <!-- Add your content of header -->
+    <!-- <header> -->
+    <!--  <nav class="navbar  navbar-fixed-top navbar-inverse">
     <div class="container">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
@@ -106,58 +102,68 @@ border-style: dashed;
       </div> 
     </div>
   </nav> -->
-</header>
-<!-- Add your site or app content here -->
-  <div id="container">
-    <div id="left" style="font-size: 1vw;">
-         <p> 
-          Hola <br>
-          Estás en el Cadáver Exquisito Constitucional de Chile <br>
-          ¿Qué es eso?<br>
-          Un gran muro colectivo para escribir libremente lo que creas que debe ir en la nueva Constitución.<br>
-          Podrás ver el final del escrito y rayado de otrx participante. <br> Utiliza este como tu inicio para continuar escribiendo
-          y rayando la nueva Constitución.<br>
-          El final de tu rayado también será el inicio <br>
-          de quien participe después de ti.<br>
-          IMPORTANTE: ESTO ES ANONIMO <br> Después de participar podrás ver el muro completo
-      </p>   
+    <!-- </header> -->
+    <!-- Add your site or app content here -->
+    <div id="container" class="container">
+        <div class="header">
+            <p>
+                Muro Constituyente
+            </p>
+            <div class="icon-spray">
+                <img src="./assets/images/spray-icon-screenshot.png">
+            </div>
+            <p>
+                de Chile
+            </p>
+        </div>
+        <div id="welcome-display" class="welcome-display">
+            <p>
+                <span class="text-title">Hola</span><br>
+                Estás en el Cadáver Exquisito Constitucional de Chile <br><br>
+                <span class="text-title">¿Qué es eso?</span><br>
+                Un gran muro colectivo para escribir libremente lo que creas que debe ir en la nueva Constitución.<br>
+                Podrás ver el final del escrito y rayado de otrx participante. <br><br>
+                <span class="text-title">¿Cómo funciona?</span><br>
+                Utiliza este como tu inicio para continuar escribiendo y rayando la nueva Constitución.<br>
+                El final de tu rayado también será el inicio <br>
+                de quien participe después de ti.<br><br>
+                IMPORTANTE: ESTO ES ANONIMO
+            </p>
+        </div>
+        <div id="input-dashboard" class="input-dashboard">
+            <div class="input-container">
+                <p>APODO</p>
+                <input type="text" id="fname" name="fname">
+            </div>
+            <div class="input-container">
+                <p>CODIGO</p>
+                <input type="text" id="userKey" name="userKey">
+            </div>
+            <div class="input-container">
+                <a href="./draw.html"><button onclick="storeKey()">EMPEZAR</button></a>
+            </div>
+        </div>
     </div>
-    <div id="right">
-    
-             
-              <p>Nombre o Apodo:</p>
-              <input type="text" id="fname" name="fname"><br><br>
-              <p>Código:</p>
-              <input type="text" id="userKey" name="userKey"><br><br>
-              <a href="./draw.html"><button onclick="storeKey()">EMPEZAR</button></a>
-           
+    <script>
+        var selValue;
+        var userName;
 
-    </div>
+        function storeKey() {
+            selValue = document.getElementById("userKey").value
+            userName = document.getElementById("fname").value
+            localStorage.setItem('uKey', selValue);
+            localStorage.setItem('uName', userName);
 
-  </div>
-
-<script>
-  var selValue;
-  var userName;
+        }
+    </script>
 
 
-  function storeKey(){
-    selValue = document.getElementById("userKey").value
-    userName = document.getElementById("fname").value
-    localStorage.setItem('uKey',selValue);
-    localStorage.setItem('uName',userName);
-
-  }
-
-</script>
-
-
-<script type="text/javascript" src="./main.70a66962.js"></script>
-<!--<a href="https://github.com/teo523/p5js_basic/tree/gh-pages/musicBox">
-<img src="./assets/images/musicBox.png" width="100" style="position:absolute;left:2.5vw;bottom:2.5vh"></a>  
-<a href="https://teodannemann.wordpress.com/">
-<img src="./assets/images/teo.png" width="130" style="position:absolute;left:120px;bottom:2.8vh"></a>
- --->
+    <script type="text/javascript" src="./main.70a66962.js"></script>
+    <!--<a href="https://github.com/teo523/p5js_basic/tree/gh-pages/musicBox">
+    <img src="./assets/images/musicBox.png" width="100" style="position:absolute;left:2.5vw;bottom:2.5vh"></a>  
+    <a href="https://teodannemann.wordpress.com/">
+    <img src="./assets/images/teo.png" width="130" style="position:absolute;left:120px;bottom:2.8vh"></a>
+    --->
 </body>
 
 </html>

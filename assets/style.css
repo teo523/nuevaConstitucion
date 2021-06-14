@@ -1,0 +1,82 @@
+body {
+  background-color: #f2f2f2;
+}
+
+.container {
+  width: 50%;
+  margin: auto;
+}
+
+.container .header {
+  width: 40%;
+  margin: auto;
+}
+
+.container .header p {
+  color: #0005ff;
+  font-size: 2vw;
+  text-align: center;
+  margin: 10px;
+}
+
+.container .header .icon-spray {
+  width: 45%;
+  margin: auto;
+}
+
+.container .header .icon-spray img {
+  width: 100%;
+}
+
+.container .welcome-display {
+  width: 92%;
+  margin: auto;
+  border: 0.5vw solid #0005ff;
+  border-radius: 1vw;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.container .welcome-display p {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+  color: #0005ff;
+  font-size: 1.1vw;
+}
+
+.container .welcome-display p .text-title {
+  font-weight: bold;
+}
+
+.container .input-dashboard {
+  width: 100%;
+}
+
+.container .input-dashboard .input-container {
+  width: 25%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  display: inline-block;
+  margin-top: 35px;
+}
+
+.container .input-dashboard .input-container p {
+  color: #0005ff;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.container .input-dashboard .input-container input {
+  width: 100%;
+}
+
+.container .input-dashboard .input-container button {
+  width: 100%;
+  height: 30px;
+  border-radius: 7px;
+  border: none;
+  background-color: #0005ff;
+  color: white;
+}
+/*# sourceMappingURL=style.css.map */
