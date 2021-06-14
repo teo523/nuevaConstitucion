@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600;800&display=swap');
+
 body{
     background-color: rgb(242, 242, 242);
 }
@@ -9,8 +11,10 @@ body{
         width: 40%;
         margin: auto;
         p{
+            font-family: 'Open Sans', sans-serif;
             color: rgb(0, 5, 255);
             font-size: 2vw;
+            font-weight: normal;
             text-align: center;
             margin: 10px;
         }
@@ -30,6 +34,7 @@ body{
         padding-top: 40px;
         padding-bottom: 40px;
         p{
+            font-family: 'Open Sans', sans-serif;
             width: 90%;
             margin: auto;
             text-align: center;
@@ -48,6 +53,8 @@ body{
             margin-right: 2.5%;
             display: inline-block;
             margin-top: 35px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: normal;
             p{
                 color: rgb(0, 5, 255);
                 margin:0;
