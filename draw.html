@@ -14,36 +14,6 @@
 
 
 <style type="text/css">
-<<<<<<< HEAD
-  
-  #blinkText {
-  position: absolute;
-  animation: blinker 1s linear infinite;
-  color: white;
-
-}
-  .images {
-  position: absolute;
-  clip-path: inset(10px 20px 30px 40px);
-}
-  .myimg {
-    clip-path: inset(10px 20px 30px 40px);
-  }
- 
- textarea{
-
-    color: white;
-    background-color: rgba(255, 217, 102,0.3);
-    
-    border: none;
-    outline: none;
-    border:solid 0.5px rgba(255, 217, 102,0.9);
-}
-
-@keyframes blinker {  
-  50% { opacity: 0; }
-}
-=======
     #blinkText {
         position: absolute;
         animation: blinker 1s linear infinite;
@@ -69,7 +39,6 @@
             opacity: 0;
         }
     }
->>>>>>> 4d7492a0ae878abcc7db259d24c45d4785e92bfa
 </style>
 
 <body>
@@ -244,6 +213,9 @@
 
         function clicked2() {
             x.id = "inTxt2";
+            x.addEventListener('drag', function(){
+                console.log('text area being dragged')
+            })
             movingTxt = 0;
             window.removeEventListener('click',clicked2);
             
