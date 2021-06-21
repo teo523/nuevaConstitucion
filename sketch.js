@@ -557,8 +557,8 @@ function drawPrevious() {
 
 //change for drawings[myMap.get(localStrage.uKey)].drawing
 colorMode(RGB, 1, 1, 1, 1);
-var prevDrawing = drawings[myMap.get(localStrage.uKey)].drawing;
-var prevText = drawings[myMap.get(localStrage.uKey)].text;
+var prevDrawing = drawings[myMap.get(localStorage.uKey)].drawing;
+var prevText = drawings[myMap.get(localStorage.uKey)].text;
 for (let j = 0; j < prevDrawing.length; j++) {
 		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
 		
