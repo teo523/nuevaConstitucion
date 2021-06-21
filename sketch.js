@@ -18,6 +18,8 @@ var letters = ['a', 'b', 'c', 'd', 'e', 'f', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 var d;
 var inTxt;
 var textA;
+var drawings;
+var myMap = new Map();
 
 
 var inp1;
@@ -522,10 +524,10 @@ function gotData(data) {
         elts[i].remove();
     }
 
-    var drawings = data.val();
+    drawings = data.val();
     var keys = Object.keys(drawings);
     for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
+        myMap.set(drawings[keys[i]].userKey,keys[i]);
         //console.log(key);
         /*var li = createElement('li', '');
         li.class('listing');
@@ -539,6 +541,11 @@ function gotData(data) {
     
         li.parent('drawinglist');*/
     }
+
+   drawPrevious();
+
+
+
 }
 
 function errData(err) {
@@ -546,7 +553,32 @@ function errData(err) {
 }
 
 
+function drawPrevious() {
 
+//change for drawings[myMap.get(localStrage.uKey)].drawing
+colorMode(RGB, 1, 1, 1, 1);
+var prevDrawing = drawings[myMap.get("CEd9731ccbd")].drawing;
+var prevText = drawings[myMap.get("CEd9731ccbd")].text;
+for (let j = 0; j < prevDrawing.length; j++) {
+		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
+		
+	for (let i = 1; i < prevDrawing[j].length; i++) {
+			
+			
+			stroke(col);
+			let newX1 = prevDrawing[j][i].x - (1/3);
+			let newX2 = prevDrawing[j][i-1].x - (1/3);
+			if (newX1 > 0 && newX2 > 0){
+        		line(newX1*width, prevDrawing[j][i].y*height, newX2*width, prevDrawing[j][i-1].y*height);
+        		line(newX1*width, prevDrawing[j][i].y*height, newX1*width, (prevDrawing[j][i].y)*height+prevDrawing[j][i].dm);
+
+
+			}
+	}
+
+}
+
+}
 
 
 
