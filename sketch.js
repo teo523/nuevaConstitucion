@@ -17,6 +17,9 @@ var userKey = "CE";
 var letters = ['a', 'b', 'c', 'd', 'e', 'f', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 var d;
 var inTxt;
+var textA;
+var drawings;
+var myMap = new Map();
 
 
 var inp1;
@@ -80,7 +83,7 @@ function setup() {
     sendSearch.hide();
     sendSearch.mousePressed(sendQuery);
 
-    inpt = createElement("textarea", "");
+    //inpt = createElement("textarea", "");
     var ht = windowHeight;
     inp1 = createColorPicker('#ff0000');
 
@@ -343,8 +346,8 @@ function addPoint() {
     var drip = random(10);
     var dmax = 0;
     var point = {
-        x: mouseX,
-        y: mouseY,
+        x: mouseX/width,  //NORMALIZED
+        y: mouseY/height,   //NORMALIZED
         z: col,
         dr: drip,
         dm: dmax
@@ -365,7 +368,7 @@ function drawLastPoint(){
         const p1 = path[path.length - 2]
         const p2 = path[path.length - 1]
         stroke(p1.z)
-        line(p1.x, p1.y, p2.x, p2.y)
+        line(p1.x*width, p1.y*height, p2.x*width, p2.y*height)
     }
 }
 
@@ -379,7 +382,7 @@ function drawDrip(){
                 if(point.dm < point.dr){
                     point.dm += .1
                     stroke(point.z)
-                    line(point.x, point.y, point.x, point.y + point.dm)
+                    line(point.x*width, point.y*height, point.x*width, point.y*height + point.dm)
                 }
             })
         })
@@ -424,10 +427,12 @@ function loadDrawing() {
     //c.filter(BLUR,15);
     d.filter(BLUR, 15);
     console.log(imgRef.src);
+    imgCreated = 1;
     //Creates two images from the previous participant: 
     //imgBlurred will take the central rectandle, blur it and put it in the left side of the screen
     //imgVisible will take the central rectandle, and put it in the left side of the screen
-    let imgVisible = createImg(imgRef.src);
+    
+    /*let imgVisible = createImg(imgRef.src);
     let imgBlurred = createImg(imgRef.src);
 
     imgVisible.parent("#canvascontainer");
@@ -443,11 +448,26 @@ function loadDrawing() {
     imgBlurred.style("filter", "blur(20px)");
     imgBlurred.style("clip-path", "inset(0% 42% 0% 30%)");
     imgBlurred.position(-width / 3, 0);
+    */
 
 }
 
 //Saves userName and key to database and then saves canvas with the name "(userKey).jpg" in storageRef/images/
 function saveDrawing() {
+
+	//Create json with textarea info: x,y, width, height and text input
+	var jsonTxt = {};
+	textA = document.getElementsByClassName("text");
+	var i;
+	for (i = 0; i < textA.length; i++) {
+		jsonTxt[i]={};
+		jsonTxt[i].x = textA[i].getBoundingClientRect().x;
+		jsonTxt[i].y = textA[i].getBoundingClientRect().y;
+		jsonTxt[i].w = textA[i].getBoundingClientRect().width;
+		jsonTxt[i].h = textA[i].getBoundingClientRect().height;
+		jsonTxt[i].text = textA[i].value;
+
+	}
 
     //Create a random 9 char key
     for (let i = 0; i < 9; i++) {
@@ -461,7 +481,9 @@ function saveDrawing() {
     var data = {
         name: userName,
         userKey: userKey,
-        parent: parent
+        parent: parent,
+        drawing: drawing,
+        text: jsonTxt
     };
 
     localStorage.removeItem("uKey");
@@ -502,10 +524,10 @@ function gotData(data) {
         elts[i].remove();
     }
 
-    var drawings = data.val();
+    drawings = data.val();
     var keys = Object.keys(drawings);
     for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
+        myMap.set(drawings[keys[i]].userKey,keys[i]);
         //console.log(key);
         /*var li = createElement('li', '');
         li.class('listing');
@@ -519,6 +541,11 @@ function gotData(data) {
     
         li.parent('drawinglist');*/
     }
+
+   drawPrevious();
+
+
+
 }
 
 function errData(err) {
@@ -526,7 +553,32 @@ function errData(err) {
 }
 
 
+function drawPrevious() {
 
+//change for drawings[myMap.get(localStrage.uKey)].drawing
+colorMode(RGB, 1, 1, 1, 1);
+var prevDrawing = drawings[myMap.get(localStorage.uKey)].drawing;
+var prevText = drawings[myMap.get(localStorage.uKey)].text;
+for (let j = 0; j < prevDrawing.length; j++) {
+		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
+		
+	for (let i = 1; i < prevDrawing[j].length; i++) {
+			
+			
+			stroke(col);
+			let newX1 = prevDrawing[j][i].x - (1/3);
+			let newX2 = prevDrawing[j][i-1].x - (1/3);
+			if (newX1 > 0 && newX2 > 0){
+        		line(newX1*width, prevDrawing[j][i].y*height, newX2*width, prevDrawing[j][i-1].y*height);
+        		line(newX1*width, prevDrawing[j][i].y*height, newX1*width, (prevDrawing[j][i].y)*height+prevDrawing[j][i].dm);
+
+
+			}
+	}
+
+}
+
+}
 
 
 
