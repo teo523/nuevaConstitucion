@@ -20,6 +20,7 @@ var inTxt;
 var textA;
 var drawings;
 var myMap = new Map();
+var leftMargin = 1/4;
 
 
 var inp1;
@@ -74,6 +75,7 @@ function setup() {
 
 
     background(img);
+    image(img,0,0,width, height,img.width/5,img.height,3*img.width/5,img.height);
 
     //inTxt = select("#txt");
     //inTxt.position(100,200);
@@ -85,11 +87,11 @@ function setup() {
 
     //inpt = createElement("textarea", "");
     var ht = windowHeight;
-    inp1 = createColorPicker('#ff0000');
+    inp1 = createColorPicker('#ed225d');
 
     inp1.style("height", "50");
     inp1.style("width", "50");
-    inp1.position(0, height - inp1.height);
+    inp1.position(leftMargin*width/2-inp1.width/2, height/2 - height/50 - inp1.height);
     //inpt.style("line-height", "4ch");
     //inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
     //inpt.style("background","transparent");
@@ -111,9 +113,16 @@ function setup() {
 
 
     //cursor('assets/images/curs.png');
+
+    textButton = select('#textButton');
+    textButton.style("z-index", "1000");
+    textButton.style("height", "50");
+    textButton.style("width", "50");
+    textButton.position(leftMargin*width/2-textButton.width/2, height/2 + height/100 );
+
     saveButton = select('#saveButton');
     saveButton.mousePressed(saveDrawing);
-    saveButton.position(0, 200);
+    saveButton.position(leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
     saveButton.style("z-index", "1000");
 
 
@@ -122,13 +131,12 @@ function setup() {
     gifButton.style("z-index", "1000");
     gifButton.style("height", "50");
     gifButton.style("width", "50");
+    gifButton.hide();
+    
+
     gifButton.position(inp1.width , height - gifButton.height);
 
-    textButton = select('#textButton');
-    textButton.style("z-index", "1000");
-    textButton.style("height", "50");
-    textButton.style("width", "50");
-    textButton.position(inp1.width + gifButton.width, height - gifButton.height);
+    
 
    
     // Setup text/draw button, that calls changeMode on click
@@ -304,7 +312,7 @@ function mousePressed(){
 
 function mouseDragged(){
     if(mode == 'draw'){
-        if (isDrawing && (mouseX > width / 3 - width / 20 && mouseX < 2 * width / 3 + width / 20)) {
+        if (isDrawing && (mouseX > width*leftMargin && mouseX < (1-leftMargin)*width)) {
             addPoint();
         }
     }
@@ -319,7 +327,7 @@ function mouseDragged(){
             x: mouseX,
             y: mouseY
         }
-        resetDrawToCurrent()
+        //resetDrawToCurrent()
         drawText()
     }
 }
@@ -389,7 +397,7 @@ function drawDrip(){
     }
 }
 
-// resets the current drawing and canvas, including drip. this function is called when other events happen, like dragging a textbox
+// NOT USED: resets the current drawing and canvas, including drip. this function is called when other events happen, like dragging a textbox
 function resetDrawToCurrent(){
     background(img)
 
@@ -409,6 +417,7 @@ function resetDrawToCurrent(){
     }
 }
 
+//NOT USED
 function drawText(){
     strokeWeight(2)
     stroke(0)
@@ -421,11 +430,11 @@ function loadDrawing() {
 
 
     //c = preImg.get(preImg.width/3,0,preImg.width/3-width/20,preImg.height);
-    d = get(2 * width / 3, 0, width / 3, height);
+    //d = get(2 * width / 3, 0, width / 3, height);
     //c.resize(width/3-width/20,height);
-    d.resize(width / 3, height);
+    //d.resize(width / 3, height);
     //c.filter(BLUR,15);
-    d.filter(BLUR, 15);
+    //d.filter(BLUR, 15);
     console.log(imgRef.src);
     imgCreated = 1;
     //Creates two images from the previous participant: 
@@ -577,7 +586,17 @@ for (let j = 0; j < prevDrawing.length; j++) {
 	}
 
 }
-
+colorMode(RGB, 255)
+fill(33,33,43);
+noStroke();
+rect(0,0,width*leftMargin, height);
+rect((1-leftMargin)*width,0,width*leftMargin, height);
+noFill();
+stroke(0,0,200);
+let wd = width*leftMargin/2;
+let ht = height / 2;
+rect(leftMargin*width/2-wd/2,height/2 - ht/2,wd,ht,wd/10);
+colorMode(RGB, 1, 1, 1, 1);
 }
 
 
