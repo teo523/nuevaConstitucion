@@ -317,7 +317,7 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if((mouseX > width*leftMargin && mouseX < 2*width/2) && mouseY < height - cueHeight*height) startPath()
+    if((mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height) startPath()
     else if(mode == 'text') {
         if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
             textBox.dragStartPos.x = mouseX
