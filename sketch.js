@@ -23,6 +23,7 @@ var myMap = new Map();
 var leftMargin = 1/4;
 var cueHeight = 1/16;
 var rightDiv;
+var rightText;
 
 
 var inp1;
@@ -129,13 +130,17 @@ function setup() {
     saveButton.style("z-index", "1000");
 
 
-    rightDiv = createDiv();
+    rightDiv = select("#rightDiv");
     rightDiv.position(2*width/3,0);
     rightDiv.id("gif");
     rightDiv.style("width",width/3);
     rightDiv.style("height",height);
     rightDiv.mousePressed(showDiv);
+    rightDiv.mouseMoved(showDiv);
+    rightDiv.mouseOut(hideDiv);
 
+    rightText = select("#rightText");
+    rightText.hide();
     //NOT USED FOR NOW
     /*gifButton = select('#gifButton');
     gifButton.mousePressed(openGif);
@@ -312,7 +317,7 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if((mouseX > width*leftMargin && mouseX < (1-leftMargin)*width) && mouseY < height - cueHeight*height) startPath()
+    if((mouseX > width*leftMargin && mouseX < 2*width/2) && mouseY < height - cueHeight*height) startPath()
     else if(mode == 'text') {
         if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
             textBox.dragStartPos.x = mouseX
@@ -323,7 +328,7 @@ function mousePressed(){
 
 function mouseDragged(){
     if(mode == 'draw'){
-        if (isDrawing && (mouseX > width*leftMargin && mouseX < (1-leftMargin)*width) && mouseY < height - cueHeight*height) {
+        if (isDrawing && (mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height) {
             addPoint();
         }
     }
@@ -573,7 +578,14 @@ function errData(err) {
 }
 
 function showDiv(){
-     rightDiv.style("background-color","black");
+     rightDiv.style("background-color","#04040444");
+     rightText.show();
+
+}
+
+function hideDiv(){
+     rightDiv.style("background-color","transparent");
+     rightText.hide();
 
 }
 
