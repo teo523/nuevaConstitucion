@@ -21,6 +21,8 @@ var textA;
 var drawings;
 var myMap = new Map();
 var leftMargin = 1/4;
+var cueHeight = 1/16;
+var rightDiv;
 
 
 var inp1;
@@ -51,6 +53,7 @@ let textBox
 function preload() {
     img = loadImage('assets/images/concrete.jpg');
     preImg = loadImage('assets/images/prev.jpg');
+    arrow =  loadImage('assets/images/arrow1.png');
 
 }
 
@@ -126,7 +129,15 @@ function setup() {
     saveButton.style("z-index", "1000");
 
 
-    gifButton = select('#gifButton');
+    rightDiv = createDiv();
+    rightDiv.position(2*width/3,0);
+    rightDiv.id("gif");
+    rightDiv.style("width",width/3);
+    rightDiv.style("height",height);
+    rightDiv.mousePressed(showDiv);
+
+    //NOT USED FOR NOW
+    /*gifButton = select('#gifButton');
     gifButton.mousePressed(openGif);
     gifButton.style("z-index", "1000");
     gifButton.style("height", "50");
@@ -136,7 +147,7 @@ function setup() {
 
     gifButton.position(inp1.width , height - gifButton.height);
 
-    
+    */
 
    
     // Setup text/draw button, that calls changeMode on click
@@ -301,7 +312,7 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if(mode == 'draw' && movingTxt == 0 && block == 0) startPath()
+    if((mouseX > width*leftMargin && mouseX < (1-leftMargin)*width) && mouseY < height - cueHeight*height) startPath()
     else if(mode == 'text') {
         if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
             textBox.dragStartPos.x = mouseX
@@ -312,7 +323,7 @@ function mousePressed(){
 
 function mouseDragged(){
     if(mode == 'draw'){
-        if (isDrawing && (mouseX > width*leftMargin && mouseX < (1-leftMargin)*width)) {
+        if (isDrawing && (mouseX > width*leftMargin && mouseX < (1-leftMargin)*width) && mouseY < height - cueHeight*height) {
             addPoint();
         }
     }
@@ -337,8 +348,8 @@ function mouseReleased(){
 }
 
 function startPath() {
-    if (mouseX > width / 3 - width / 20 && mouseX < 2 * width / 3 + width / 20)
-        isDrawing = true;
+    
+    isDrawing = true;
     currentPath = [];
     drawing.push(currentPath);
 }
@@ -561,6 +572,10 @@ function errData(err) {
     console.log(err);
 }
 
+function showDiv(){
+     rightDiv.style("background-color","black");
+
+}
 
 function drawPrevious() {
 
@@ -568,6 +583,7 @@ function drawPrevious() {
 colorMode(RGB, 1, 1, 1, 1);
 var prevDrawing = drawings[myMap.get(localStorage.uKey)].drawing;
 var prevText = drawings[myMap.get(localStorage.uKey)].text;
+var prevUser = drawings[myMap.get(localStorage.uKey)].name;
 for (let j = 0; j < prevDrawing.length; j++) {
 		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
 		
@@ -586,17 +602,63 @@ for (let j = 0; j < prevDrawing.length; j++) {
 	}
 
 }
+
+//Dark left panel
 colorMode(RGB, 255)
 fill(33,33,43);
 noStroke();
 rect(0,0,width*leftMargin, height);
-rect((1-leftMargin)*width,0,width*leftMargin, height);
+//rect((1-leftMargin)*width,0,width*leftMargin, height);
+
+//Shades
+fill(33,33,43,130);
+rect(width*leftMargin,0,10,height);
+stroke(0);
+line(width*leftMargin,0,width*leftMargin,height);
+
+//Menu bar at left
 noFill();
 stroke(0,0,200);
 let wd = width*leftMargin/2;
 let ht = height / 2;
 rect(leftMargin*width/2-wd/2,height/2 - ht/2,wd,ht,wd/10);
-colorMode(RGB, 1, 1, 1, 1);
+fill(200,200,255);
+stroke(0,0,250);
+strokeWeight(1);
+
+//Upper bar
+rect(0,height-cueHeight*height,width/3,height);
+fill(250,250,255);
+rect(width/3,height-cueHeight*height,width/3,height);
+fill(220,220,255);
+rect(2*width/3,height-cueHeight*height,width/3,height);
+
+
+//left side
+
+/*stroke(0,0,250);
+strokeWeight(3);
+line(5,2*cueHeight*height/3,width/3-5,2*cueHeight*height/3);
+line(5,2*cueHeight*height/3-5,5,2*cueHeight*height/3+5);
+line(width/3-5,2*cueHeight*height/3-5,width/3-5,2*cueHeight*height/3+5);*/
+
+
+noStroke();
+
+fill(0,0,250);
+textFont('Sans');
+textSize(width/70);
+text('Muro de tu amig@: ' + prevUser , 30, height-cueHeight*height/2);
+fill(0,0,250);
+text('Muro de ' + localStorage.uName + '(Tú)', width/3+20,height - cueHeight*height/2);
+text('Muro de tus invitad@s', 2*width/3+20,height - cueHeight*height/2);
+
+
+
+/*colorMode(RGB, 1, 1, 1, 1);
+translate(width/3,3*cueHeight*height/4);
+rotate(PI);
+image(arrow, 0, 0,60,20);*/
 }
 
 
