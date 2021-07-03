@@ -54,7 +54,7 @@ let mode = 'draw'
 let textBox
 
 function preload() {
-    img = loadImage('assets/images/brick4.jpeg');
+    img = loadImage('assets/images/brick2.jpeg');
     preImg = loadImage('assets/images/prev.jpg');
     osb =  loadImage('assets/images/OSB.jpeg');
 
