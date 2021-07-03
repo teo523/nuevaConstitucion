@@ -149,6 +149,16 @@ function setup() {
 
     rightText = select("#rightText");
     rightText.hide();
+
+    leftDiv = select("#leftDiv");
+    leftDiv.position(0,0);
+    leftDiv.style("width",width*leftMargin);
+    leftDiv.style("height",height-cueHeight*height);
+    leftDiv.style("background-color","#21212B");
+    
+
+
+
     //NOT USED FOR NOW
     /*gifButton = select('#gifButton');
     gifButton.mousePressed(openGif);
