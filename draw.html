@@ -31,13 +31,15 @@
   }
  
  textarea{
-
+    position: : absolute;
     color: rgb(70,50,50);
     background-color: rgba(255, 217, 102,0.3);
     justify-content: center;
     text-transform: uppercase;
     font-weight: bold;
-    border: none;
+    border: grey;
+    border-style: solid;
+    border-width: 1px;
     outline: none;
     font-family:  monospace;
     /*border:solid 0.5px rgba(255, 217, 102,0.9);*/
@@ -83,16 +85,14 @@
 
 <body>
     <div id="canvascontainer"></div>
-    <textarea id="txt" rows="4" cols="50">
-    </textarea>
     <div id="images" style="z-index: 1000">
         <img id="myimg" hidden style="z-index: 3000">
         <div>
          
             <button id="saveButton" style="z-index: 1000">ENVIAR</button>
             <button id="textButton" style="z-index: 1000">T</button>
-            <button onclick="dragAll()" id="gifButton">GIF</button>
-            <button id="modeButton" style="z-index: 1000">Text</button>
+            
+           
 
             <div id="rightDiv">
                 <h1 id="rightText" style="color:white;"> Esta zona es para el dibujo de la persona que invites después</h1>
@@ -118,6 +118,7 @@
         var imgRef;
         var movingTxt = 0;
         var block = 0;
+        var counter = 0;
 
         firebaseConfig = {
             apiKey: "AIzaSyBo4BBv2muAE4Y-yvJ90SYmn5fdwy5L84k",
@@ -140,7 +141,7 @@
         ref.on('value', gotData, errData);
 
         var inptKey = localStorage.uKey;
-        storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function (url) {
+        /*storageRef.child('/images/' + inptKey + '.jpg').getDownloadURL().then(function (url) {
             // `url` is the download URL for 'images/stars.jpg'
 
             // This can be downloaded directly:
@@ -151,31 +152,25 @@
             imgRef.src = url;
         }).catch(function (error) {
             // Handle any errors
-        });
+        });*/
 
 
 
 
-        function dragAll() {
-            var imgs = document.getElementsByClassName("images");
-            for (i = 0; i < 10; i++) {
-                dragElement(imgs.item(i));
-            }
-        }
+   
 
         function dragElement(elmnt) {
             var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            if (document.getElementById(elmnt.id + "header")) {
+           
                 // if present, the header is where you move the DIV from:
-                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-            } else {
-                // otherwise, move the DIV from anywhere inside the DIV:
-                elmnt.onmousedown = dragMouseDown;
-            }
+                document.getElementById(elmnt.id).onmousedown = dragMouseDown;
+           
 
             function dragMouseDown(e) {
                 e = e || window.event;
-                e.preventDefault();
+                blockCanvas();
+             
+                //e.preventDefault();
                 // get the mouse cursor position at startup:
                 pos3 = e.clientX;
                 pos4 = e.clientY;
@@ -192,15 +187,33 @@
                 pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
+                x1=elmnt.getBoundingClientRect().x;
+                x2=elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width;
+                y1=elmnt.getBoundingClientRect().y;
+                y2=elmnt.getBoundingClientRect().y+elmnt.getBoundingClientRect().height;
                 // set the element's new position:
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                if (!(x2 - 20 < pos3 && pos3 <= x2  && y2 - 20 < pos4 && pos4 < y2)){
+                    if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width<2*windowWidth/3 && elmnt.getBoundingClientRect().x > windowWidth*leftMargin){
+                        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                    }
+                    else if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width>=2*windowWidth/3) {
+                        showDiv();
+                        elmnt.style.left = 2*windowWidth/3-1-elmnt.getBoundingClientRect().width + "px";
+                    }
+
+                    else if (elmnt.getBoundingClientRect().x <= windowWidth*leftMargin)
+                        elmnt.style.left = windowWidth*leftMargin+1;
+                }
+                
             }
 
             function closeDragElement() {
                 // stop moving when mouse button is released:
                 document.onmouseup = null;
                 document.onmousemove = null;
+                hideDiv();
+                unblockCanvas();
             }
         }
 
@@ -247,32 +260,33 @@
 
     function createTxt() {
         var x = document.createElement("TEXTAREA");
-        x.addEventListener('mouseover',blockCanvas,true);
-        x.addEventListener('mouseout',unblockCanvas,true);
+        x.id="txt"+counter;
+        x.classList.add("text");
+        counter++;
+
         canvascontainer.appendChild(x);
-        x.id = "inTxt"
-        movingTxt = 1;
-        
-        window.addEventListener('click',clicked2,true);
+              let xx = select("#"+x.id);
+    if (xx != undefined){
+        xx.position(width/3,height/2);
 
-        function clicked2() {
-            x.id = "inTxt2";
-            x.className = "text";
-            movingTxt = 0;
-            window.removeEventListener('click',clicked2);
-            
-        }
-
+    }
+       
+ 
+        dragElement(x);
 
 
     }
 
     function blockCanvas() {
         block = 1;
+        movingTxt = 1;
+        console.log(movingTxt);
+
     }
 
     function unblockCanvas() {
         block = 0;
+        movingTxt = 0;
     }
 
 

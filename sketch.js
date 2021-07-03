@@ -24,6 +24,8 @@ var leftMargin = 1/4;
 var cueHeight = 1/16;
 var rightDiv;
 var rightText;
+var osb;
+var try0 = 0;
 
 
 var inp1;
@@ -52,9 +54,9 @@ let mode = 'draw'
 let textBox
 
 function preload() {
-    img = loadImage('assets/images/concrete.jpg');
+    img = loadImage('assets/images/brick4.jpeg');
     preImg = loadImage('assets/images/prev.jpg');
-    arrow =  loadImage('assets/images/arrow1.png');
+    osb =  loadImage('assets/images/OSB.jpeg');
 
 }
 
@@ -78,11 +80,15 @@ function setup() {
     //preImg.resize(width,height);
 
 
-    background(img);
+  
     image(img,0,0,width, height,img.width/5,img.height,3*img.width/5,img.height);
 
     //inTxt = select("#txt");
     //inTxt.position(100,200);
+
+    loading = createP("Cargando...");
+    loading.style("font-size","3vw");
+
     searchTxt = createInput('');
     searchTxt.hide();
     sendSearch = createButton("Buscar");
@@ -96,6 +102,7 @@ function setup() {
     inp1.style("height", "50");
     inp1.style("width", "50");
     inp1.position(leftMargin*width/2-inp1.width/2, height/2 - height/50 - inp1.height);
+    inp1.hide();
     //inpt.style("line-height", "4ch");
     //inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
     //inpt.style("background","transparent");
@@ -123,12 +130,13 @@ function setup() {
     textButton.style("height", "50");
     textButton.style("width", "50");
     textButton.position(leftMargin*width/2-textButton.width/2, height/2 + height/100 );
+    textButton.hide();
 
     saveButton = select('#saveButton');
     saveButton.mousePressed(saveDrawing);
     saveButton.position(leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
     saveButton.style("z-index", "1000");
-
+    saveButton.hide();
 
     rightDiv = select("#rightDiv");
     rightDiv.position(2*width/3,0);
@@ -188,15 +196,7 @@ function setup() {
      ref.on('value', gotData, errData);
    
    */
-     textBox = {
-        pos: {x: width / 2, y: height / 2},
-        dragStartPos: {x: 0, y: 0},
-        w: 100,
-        h: 100,
-        text: 'ola k ase (mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){',
-        color: 'black',
-        size: 20
-    }
+
 
 }
 
@@ -204,14 +204,18 @@ function draw() {
 
     stroke(0);
 
+
+    let xx = select("#iTxt");
+if (xx != undefined){
+    xx.position(100,100);
+
+}
+
+
     cursor('assets/images/Spray1.cur');
     //background(img);
 
-    if (movingTxt == 1){
-    var inTxt = select("#inTxt");
-    inTxt.position(mouseX,mouseY);
 
-	}
     //If user key is incorrect, user can't save
     if (localStorage.uKey == undefined) {
         saveButton.hide();
@@ -317,7 +321,7 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if((mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height) startPath()
+    if((mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height && movingTxt == 0) startPath()
     else if(mode == 'text') {
         if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
             textBox.dragStartPos.x = mouseX
@@ -486,10 +490,10 @@ function saveDrawing() {
 	var i;
 	for (i = 0; i < textA.length; i++) {
 		jsonTxt[i]={};
-		jsonTxt[i].x = textA[i].getBoundingClientRect().x;
-		jsonTxt[i].y = textA[i].getBoundingClientRect().y;
-		jsonTxt[i].w = textA[i].getBoundingClientRect().width;
-		jsonTxt[i].h = textA[i].getBoundingClientRect().height;
+		jsonTxt[i].x = textA[i].getBoundingClientRect().x / width;
+		jsonTxt[i].y = textA[i].getBoundingClientRect().y / height;
+		jsonTxt[i].w = textA[i].getBoundingClientRect().width / width;
+		jsonTxt[i].h = textA[i].getBoundingClientRect().height /height;
 		jsonTxt[i].text = textA[i].value;
 
 	}
@@ -533,8 +537,12 @@ function saveDrawing() {
 
     });
 
+    localStorage.setItem('childKey', userKey);
+
     alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
 
+
+    window.location.href = "post-experience.html";
 
     saveButton.hide();
 
@@ -567,6 +575,7 @@ function gotData(data) {
         li.parent('drawinglist');*/
     }
 
+   
    drawPrevious();
 
 
@@ -590,87 +599,111 @@ function hideDiv(){
 }
 
 function drawPrevious() {
+  background(img);
+  saveButton.show();
+  textButton.show();
+  inp1.show();
 
 //change for drawings[myMap.get(localStrage.uKey)].drawing
-colorMode(RGB, 1, 1, 1, 1);
-var prevDrawing = drawings[myMap.get(localStorage.uKey)].drawing;
-var prevText = drawings[myMap.get(localStorage.uKey)].text;
-var prevUser = drawings[myMap.get(localStorage.uKey)].name;
-for (let j = 0; j < prevDrawing.length; j++) {
-		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
-		
-	for (let i = 1; i < prevDrawing[j].length; i++) {
-			
-			
-			stroke(col);
-			let newX1 = prevDrawing[j][i].x - (1/3);
-			let newX2 = prevDrawing[j][i-1].x - (1/3);
-			if (newX1 > 0 && newX2 > 0){
-        		line(newX1*width, prevDrawing[j][i].y*height, newX2*width, prevDrawing[j][i-1].y*height);
-        		line(newX1*width, prevDrawing[j][i].y*height, newX1*width, (prevDrawing[j][i].y)*height+prevDrawing[j][i].dm);
+
+if (localStorage.uKey != "" && localStorage.uKey != undefined){
+    colorMode(RGB, 1, 1, 1, 1);
+    var prevDrawing = drawings[myMap.get(localStorage.uKey)].drawing;
+    var prevText = drawings[myMap.get(localStorage.uKey)].text;
+    var prevUser = drawings[myMap.get(localStorage.uKey)].name;
+    for (let j = 0; j < prevDrawing.length; j++) {
+    		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
+    		
+    	for (let i = 1; i < prevDrawing[j].length; i++) {
+    			
+    			
+    			stroke(col);
+    			let newX1 = prevDrawing[j][i].x - (1/3);
+    			let newX2 = prevDrawing[j][i-1].x - (1/3);
+    			if (newX1 > 0 && newX2 > 0){
+            		line(newX1*width, prevDrawing[j][i].y*height, newX2*width, prevDrawing[j][i-1].y*height);
+            		line(newX1*width, prevDrawing[j][i].y*height, newX1*width, (prevDrawing[j][i].y)*height+prevDrawing[j][i].dm);
 
 
-			}
-	}
+    			}
+    	}
+
+    }
+
+
+    //TEXTAREAS
+    for (let j = 0; j < prevText.length; j++) {
+        let x = createElement("textarea");
+        canvascontainer.appendChild(x.elt);
+        if (prevText[j].x-(1/3)>0){
+            x.position((prevText[j].x-(1/3)) * width,prevText[j].y * height);
+            x.html(prevText[j].text);
+            x.attribute("disabled","true");
+        }
+        else {
+        //x.hide();
+        x.position(100,100);
+        }
+    }
 
 }
+    //Dark left panel
+    colorMode(RGB, 255)
+    fill(33,33,43);
+    noStroke();
+    rect(0,0,width*leftMargin, height);
+    //image(osb,0,0,width*leftMargin, height);
+    //rect((1-leftMargin)*width,0,width*leftMargin, height);
 
-//Dark left panel
-colorMode(RGB, 255)
-fill(33,33,43);
-noStroke();
-rect(0,0,width*leftMargin, height);
-//rect((1-leftMargin)*width,0,width*leftMargin, height);
+    //Shades
+    fill(33,33,43,130);
+    rect(width*leftMargin,0,10,height);
+    stroke(0);
+    line(width*leftMargin,0,width*leftMargin,height);
 
-//Shades
-fill(33,33,43,130);
-rect(width*leftMargin,0,10,height);
-stroke(0);
-line(width*leftMargin,0,width*leftMargin,height);
+    //Menu bar at left
+    noFill();
+    stroke(0,0,200);
+    let wd = width*leftMargin/2;
+    let ht = height / 2;
+    rect(leftMargin*width/2-wd/2,height/2 - ht/2,wd,ht,wd/10);
+    fill(200,200,255);
+    stroke(0,0,250);
+    strokeWeight(1);
 
-//Menu bar at left
-noFill();
-stroke(0,0,200);
-let wd = width*leftMargin/2;
-let ht = height / 2;
-rect(leftMargin*width/2-wd/2,height/2 - ht/2,wd,ht,wd/10);
-fill(200,200,255);
-stroke(0,0,250);
-strokeWeight(1);
-
-//Upper bar
-rect(0,height-cueHeight*height,width/3,height);
-fill(250,250,255);
-rect(width/3,height-cueHeight*height,width/3,height);
-fill(220,220,255);
-rect(2*width/3,height-cueHeight*height,width/3,height);
-
-
-//left side
-
-/*stroke(0,0,250);
-strokeWeight(3);
-line(5,2*cueHeight*height/3,width/3-5,2*cueHeight*height/3);
-line(5,2*cueHeight*height/3-5,5,2*cueHeight*height/3+5);
-line(width/3-5,2*cueHeight*height/3-5,width/3-5,2*cueHeight*height/3+5);*/
+    //Upper bar
+    rect(0,height-cueHeight*height,width/3,height);
+    fill(250,250,255);
+    rect(width/3,height-cueHeight*height,width/3,height);
+    fill(220,220,255);
+    rect(2*width/3,height-cueHeight*height,width/3,height);
 
 
-noStroke();
+    //left side
 
-fill(0,0,250);
-textFont('Sans');
-textSize(width/70);
-text('Muro de tu amig@: ' + prevUser , 30, height-cueHeight*height/2);
-fill(0,0,250);
-text('Muro de ' + localStorage.uName + '(Tú)', width/3+20,height - cueHeight*height/2);
-text('Muro de tus invitad@s', 2*width/3+20,height - cueHeight*height/2);
+    /*stroke(0,0,250);
+    strokeWeight(3);
+    line(5,2*cueHeight*height/3,width/3-5,2*cueHeight*height/3);
+    line(5,2*cueHeight*height/3-5,5,2*cueHeight*height/3+5);
+    line(width/3-5,2*cueHeight*height/3-5,width/3-5,2*cueHeight*height/3+5);*/
 
 
+    noStroke();
 
-/*colorMode(RGB, 1, 1, 1, 1);
-translate(width/3,3*cueHeight*height/4);
-rotate(PI);
-image(arrow, 0, 0,60,20);*/
+    fill(0,0,250);
+    textFont('Sans');
+    textSize(width/70);
+    text('Muro de tu amig@: ' + prevUser , 30, height-cueHeight*height/2);
+    fill(0,0,250);
+    text('Muro de ' + localStorage.uName + '(Tú)', width/3+20,height - cueHeight*height/2);
+    text('Muro de tus invitad@s', 2*width/3+20,height - cueHeight*height/2);
+
+
+
+    /*colorMode(RGB, 1, 1, 1, 1);
+    translate(width/3,3*cueHeight*height/4);
+    rotate(PI);
+    image(arrow, 0, 0,60,20);*/
 }
 
 
