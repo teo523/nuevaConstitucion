@@ -25,7 +25,7 @@ var cueHeight = 1/16;
 var rightDiv;
 var rightText;
 var osb;
-var try0 = 0;
+var started = 0;
 
 
 var inp1;
@@ -150,11 +150,24 @@ function setup() {
     rightText = select("#rightText");
     rightText.hide();
 
+
     leftDiv = select("#leftDiv");
     leftDiv.position(0,0);
     leftDiv.style("width",width*leftMargin);
     leftDiv.style("height",height-cueHeight*height);
     leftDiv.style("background-color","#21212B");
+    leftDiv.hide();
+
+
+    ctrlDiv = select("#ctrlDiv");
+    ctrlDiv.style("width",leftDiv.width/2);
+    ctrlDiv.style("height",(height-cueHeight*height)/2);
+    ctrlDiv.position(leftMargin*width/2-ctrlDiv.width/2,height/2 - height/20 - inp1.height );
+    ctrlDiv.style("background-color","#transparent");
+    ctrlDiv.style("border-color","#0000dc");
+    ctrlDiv.style("border-radius","25px");
+    ctrlDiv.hide();
+
     
 
 
@@ -331,35 +344,18 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if((mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height && movingTxt == 0) startPath()
-    else if(mode == 'text') {
-        if(mouseX > textBox.pos.x && mouseY > textBox.pos.y && mouseX < textBox.pos.x + textBox.w && mouseY < textBox.pos.y + textBox.h){
-            textBox.dragStartPos.x = mouseX
-            textBox.dragStartPos.y = mouseY
-        }
-    }
+    if((started && mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height && movingTxt == 0) startPath()
+
 }
 
 function mouseDragged(){
-    if(mode == 'draw'){
+  
         if (isDrawing && (mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height) {
             addPoint();
         }
-    }
-    else if(mode == 'text') {
-        const deltaPos = {
-            x: mouseX - textBox.dragStartPos.x,
-            y: mouseY - textBox.dragStartPos.y
-        }
-        textBox.pos.x += deltaPos.x
-        textBox.pos.y += deltaPos.y
-        textBox.dragStartPos = {
-            x: mouseX,
-            y: mouseY
-        }
-        //resetDrawToCurrent()
-        drawText()
-    }
+    
+  
+    
 }
 
 function mouseReleased(){
@@ -613,6 +609,9 @@ function drawPrevious() {
   saveButton.show();
   textButton.show();
   inp1.show();
+  leftDiv.show();
+  ctrlDiv.show();
+  started = 1;
 
 //change for drawings[myMap.get(localStrage.uKey)].drawing
 
@@ -649,6 +648,7 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
             x.position((prevText[j].x-(1/3)) * width,prevText[j].y * height);
             x.html(prevText[j].text);
             x.attribute("disabled","true");
+            x.style("resize","none");
         }
         else {
         //x.hide();
@@ -658,18 +658,20 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
 
 }
     //Dark left panel
-    colorMode(RGB, 255)
+    /*colorMode(RGB, 255)
     fill(33,33,43);
     noStroke();
-    rect(0,0,width*leftMargin, height);
+    rect(0,0,width*leftMargin, height);*/
     //image(osb,0,0,width*leftMargin, height);
     //rect((1-leftMargin)*width,0,width*leftMargin, height);
 
     //Shades
+    colorMode(RGB,255);
+    noStroke();
     fill(33,33,43,130);
+
     rect(width*leftMargin,0,10,height);
-    stroke(0);
-    line(width*leftMargin,0,width*leftMargin,height);
+    
 
     //Menu bar at left
     noFill();

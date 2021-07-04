@@ -37,11 +37,14 @@
     justify-content: center;
     text-transform: uppercase;
     font-weight: bold;
-    border: grey;
-    border-style: solid;
-    border-width: 1px;
+    border: none;
+
+/*    border-style: solid;
+    border-width: 0.1px;*/
     outline: none;
     font-family:  monospace;
+    background-image: url(/assets/images/paper.jpeg);
+    opacity: 0.95;
     /*border:solid 0.5px rgba(255, 217, 102,0.9);*/
 }
 
@@ -56,6 +59,11 @@
 
     }
 
+    #ctrlDiv {
+    background-color: transparent;
+    border: solid;
+}
+
     .images {
         position: absolute;
         clip-path: inset(10px 20px 30px 40px);
@@ -65,11 +73,7 @@
         clip-path: inset(10px 20px 30px 40px);
     }
 
-    .myDiv {
-          border: 5px outset red;
-          background-color: lightblue;    
-          text-align: center;
-    }
+
 
     body {
         cursor: url(http://www.rw-designer.com/cursor-extern.php?id=126861);
@@ -92,8 +96,14 @@
             <button id="saveButton" style="z-index: 1000">ENVIAR</button>
             <button id="textButton" style="z-index: 1000">T</button>
             
-            <div id="leftDiv">
+             <div id="leftDiv">
+           
             </div>
+
+            <div id="ctrlDiv">
+            </div>
+           
+
 
             <div id="rightDiv">
                 <h1 id="rightText" style="color:white;"> Esta zona es para el dibujo de la persona que invites después</h1>
