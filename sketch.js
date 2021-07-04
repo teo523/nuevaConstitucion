@@ -160,8 +160,8 @@ function setup() {
 
 
     ctrlDiv = select("#ctrlDiv");
-    ctrlDiv.style("width",leftDiv.width/2);
-    ctrlDiv.style("height",(height-cueHeight*height)/2);
+    ctrlDiv.style("width",JSON.stringify(leftDiv.width/2);
+    ctrlDiv.style("height",JSON.stringify((height-cueHeight*height)/2));
     ctrlDiv.position(leftMargin*width/2-ctrlDiv.width/2,height/2 - height/20 - inp1.height );
     ctrlDiv.style("background-color","#transparent");
     ctrlDiv.style("border-color","#0000dc");
