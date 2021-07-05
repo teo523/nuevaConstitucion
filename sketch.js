@@ -639,7 +639,7 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
 
     }
 
-
+if (prevText != undefined){
     //TEXTAREAS
     for (let j = 0; j < prevText.length; j++) {
         let x = createElement("textarea");
@@ -656,7 +656,7 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
         }
     }
 
-}
+}}
     //Dark left panel
     /*colorMode(RGB, 255)
     fill(33,33,43);
@@ -669,7 +669,6 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
     colorMode(RGB,255);
     noStroke();
     fill(33,33,43,130);
-
     rect(width*leftMargin,0,10,height);
     
 
