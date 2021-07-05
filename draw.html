@@ -205,12 +205,12 @@
                 // set the element's new position:
                 if (!(x2 - 20 < pos3 && pos3 <= x2  && y2 - 20 < pos4 && pos4 < y2)){
                     if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width<2*windowWidth/3 && elmnt.getBoundingClientRect().x > windowWidth*leftMargin){
-                        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                        elmnt.style.top = (int(elmnt.style.top) - pos2) ;
+                        elmnt.style.left = (int(elmnt.style.left) - pos1) ;
                     }
                     else if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width>=2*windowWidth/3) {
                         showDiv();
-                        elmnt.style.left = 2*windowWidth/3-1-elmnt.getBoundingClientRect().width + "px";
+                        elmnt.style.left = 2*windowWidth/3-elmnt.getBoundingClientRect().width-3;
                     }
 
                     else if (elmnt.getBoundingClientRect().x <= windowWidth*leftMargin)
