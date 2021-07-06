@@ -61,11 +61,11 @@ function preload() {
 }
 
 function setup() {
-    if (windowWidth > windowHeight)
-        canvas = createCanvas(windowWidth, windowHeight);
+    if (windowWidth / windowHeight >= 16 / 9)
+        canvas = createCanvas(windowHeight*16/9, windowHeight);
 
     else
-        canvas = createCanvas(windowWidth, windowWidth);
+        canvas = createCanvas(windowWidth, windowWidth*9/16);
 
     canvas.parent('canvascontainer');
 
