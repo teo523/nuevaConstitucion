@@ -523,6 +523,7 @@ function saveDrawing() {
 
     localStorage.removeItem("uKey");
     localStorage.removeItem("uName");
+    localStorage.setItem("finalKey",userKey);
     var result = ref.push(data, dataSent);
     console.log(result.key);
 

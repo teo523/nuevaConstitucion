@@ -29,7 +29,8 @@ firebase.initializeApp(firebaseConfig)
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-let inptKey = 'CE83b7a1102'
+//let inptKey = 'CE83b7a1102'
+let inptKey = localStorage.finalKey;
 
 function setup(){
     databaseRef.get().then(function(snapshot){
