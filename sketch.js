@@ -149,7 +149,7 @@ function setup() {
     rightDiv.style("height",height);
     rightDiv.mousePressed(showDiv);
     rightDiv.style("background-color","#04040444");
-    //rightDiv.hide();
+    rightDiv.hide();
 
     //rightDiv.mouseMoved(showDiv);
     //rightDiv.mouseOut(hideDiv);
@@ -606,11 +606,6 @@ function showDiv(){
 
 }
 
-function hideDiv(){
-     rightDiv.style("background-color","transparent");
-     rightText.hide();
-
-}
 
 function drawPrevious() {
   background(img);
