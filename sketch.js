@@ -57,6 +57,7 @@ function preload() {
     img = loadImage('assets/images/brick2.jpeg');
     preImg = loadImage('assets/images/prev.jpg');
     osb =  loadImage('assets/images/OSB.jpeg');
+    myFont = loadFont("assets/OpenSans.ttf");
 
 }
 
@@ -134,9 +135,12 @@ function setup() {
 
     saveButton = select('#saveButton');
     saveButton.mousePressed(saveDrawing);
+    saveButton.style("width","100");
     saveButton.position(leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
     saveButton.style("z-index", "1000");
+
     saveButton.hide();
+
 
     rightDiv = select("#rightDiv");
     rightDiv.position(2*width/3,0);
@@ -144,11 +148,14 @@ function setup() {
     rightDiv.style("width",width/3);
     rightDiv.style("height",height);
     rightDiv.mousePressed(showDiv);
-    rightDiv.mouseMoved(showDiv);
-    rightDiv.mouseOut(hideDiv);
+    rightDiv.style("background-color","#04040444");
+    rightDiv.hide();
+
+    //rightDiv.mouseMoved(showDiv);
+    //rightDiv.mouseOut(hideDiv);
 
     rightText = select("#rightText");
-    rightText.hide();
+    //rightText.hide();
 
 
     leftDiv = select("#leftDiv");
@@ -612,6 +619,8 @@ function drawPrevious() {
   inp1.show();
   leftDiv.show();
   ctrlDiv.show();
+  loading.hide();
+  rightDiv.show();
   started = 1;
 
 //change for drawings[myMap.get(localStrage.uKey)].drawing
@@ -703,7 +712,7 @@ if (prevText != undefined){
     noStroke();
 
     fill(0,0,250);
-    textFont('Sans');
+    textFont(myFont);
     textSize(width/70);
     text('Muro de tu amig@: ' + prevUser , 30, height-cueHeight*height/2);
     fill(0,0,250);

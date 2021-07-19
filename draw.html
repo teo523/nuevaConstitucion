@@ -7,7 +7,7 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
     <script language="javascript" type="text/javascript" src="sketch.js"></script>
-
+     <link rel="stylesheet" href="./assets/style.css" />
 
 </head>
 
@@ -29,20 +29,28 @@
   .myimg {
     clip-path: inset(10px 20px 30px 40px);
   }
+
+  .disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
  
  textarea{
     position: : absolute;
     color: rgb(70,50,50);
     background-color: rgba(255, 217, 102,0.3);
     justify-content: center;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-weight: bold;
     border: none;
 
 /*    border-style: solid;
     border-width: 0.1px;*/
     outline: none;
-    font-family:  monospace;
+    font-family: 'Open Sans', sans-serif;
     background-image: url(/assets/images/paper.jpeg);
     opacity: 0.95;
     /*border:solid 0.5px rgba(255, 217, 102,0.9);*/
@@ -77,6 +85,7 @@
 
     body {
         cursor: url(http://www.rw-designer.com/cursor-extern.php?id=126861);
+        font-family: 'Open Sans', sans-serif;
     }
 
     @keyframes blinker {
@@ -93,8 +102,8 @@
         <img id="myimg" hidden style="z-index: 3000">
         <div>
          
-            <button id="saveButton" style="z-index: 1000">ENVIAR</button>
-            <button id="textButton" style="z-index: 1000">T</button>
+            <button id="saveButton" class="disable-select"  style="z-index: 1000; font-family: 'Open Sans', sans-serif;">ENVIAR</button>
+            <button id="textButton" class="disable-select"  style="z-index: 1000; font-family: 'Open Sans', sans-serif;">T</button>
             
              <div id="leftDiv">
            
@@ -105,8 +114,8 @@
            
 
 
-            <div id="rightDiv">
-                <h1 id="rightText" style="color:white;"> Esta zona es para el dibujo de la persona que invites después</h1>
+            <div id="rightDiv" >
+                <p id="rightText" class="disable-select" style="color:white; font-size: 2vw ;padding: 2vw 2vw 2vw 2vw" > Esta zona es para el dibujo de la persona que invites después</p>
             </div>
 
         </div>
