@@ -5,6 +5,7 @@
 
 // Global variables
 let tree = []
+let snapshot;
 // cuadrant aspect
 const originAspect = 16 / 9
 const aspectRatio = .74
@@ -34,13 +35,20 @@ const databaseRef = firebase.database().ref('drawings')
 let inptKey = localStorage.finalKey;
 
 function setup(){
-    
-    databaseRef.get().then(function(snapshot){
-        buildTree(inptKey, snapshot)
-        console.log(tree)
-        tree = tree.reverse()
-        drawTree(tree)
-    })
+    databaseRef.on("value",getData,errorData);
+
+}
+
+
+function getData(data){
+    snapshot = data;
+    buildTree(inptKey, snapshot)   
+    tree = tree.reverse()
+    drawTree(tree)
+}
+
+function errorData(err){
+    console.log(err);
 }
 
 function buildTree(key, database){
