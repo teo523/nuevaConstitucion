@@ -9,7 +9,7 @@ let tree = []
 const originAspect = 16 / 9
 const aspectRatio = .74
 const overlapAspect = 4 / 27
-const canvasHeightPct = .85
+const canvasHeightPct = .8
 
 // Firebase config data
 const firebaseConfig = {
@@ -30,8 +30,8 @@ firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-//let inptKey = 'CE83b7a1102'
-let inptKey = localStorage.finalKey;
+let inptKey = 'CE83b7a1102'
+// let inptKey = localStorage.finalKey;
 
 function setup(){
     
@@ -81,7 +81,8 @@ function drawTree(data){
         // Create Canvas
         const oneUserWidth = aspectRatio * windowHeight * canvasHeightPct
         // Note: canvas is longer because it still has the overlapped tails
-        createCanvas(oneUserWidth * numQuadrants, windowHeight * canvasHeightPct)
+        const cnv = createCanvas(oneUserWidth * numQuadrants, windowHeight * canvasHeightPct)
+        cnv.parent('canvas-wrapper')
         background(250)
         const originWidth = originAspect * height
         fill(0, 0, 0, 0)

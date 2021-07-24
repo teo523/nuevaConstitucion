@@ -1,0 +1,25 @@
+body {
+  margin: 0px;
+  width: 100%;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  overflow: scroll;
+  overflow-y: hidden;
+}
+
+.user-message {
+  border: 0.5vw solid #0005ff;
+  border-radius: 1vw;
+  width: 40vw;
+  height: 5vw;
+  margin: auto;
+  text-align: center;
+  margin-top: 1.5vw;
+  font-family: 'Open Sans', sans-serif;
+  color: #0005ff;
+  font-size: 1.1vw;
+  font-weight: normal;
+}
+/*# sourceMappingURL=style-post-experience.css.map */
