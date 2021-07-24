@@ -6,11 +6,12 @@
 // Global variables
 let tree = []
 let snapshot;
+let loaded = false
 // cuadrant aspect
 const originAspect = 16 / 9
 const aspectRatio = .74
 const overlapAspect = 4 / 27
-const canvasHeightPct = .8
+const canvasHeightPct = .75
 
 // Firebase config data
 const firebaseConfig = {
@@ -31,20 +32,22 @@ firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-let inptKey = 'CE83b7a1102'
+let inptKey = 'CEff7a3ac4e'
 // let inptKey = localStorage.finalKey;
 
 function setup(){
     databaseRef.on("value",getData,errorData);
-
+    document.getElementById('code').innerHTML = inptKey
 }
 
 
 function getData(data){
-    snapshot = data;
-    buildTree(inptKey, snapshot)   
-    tree = tree.reverse()
-    drawTree(tree)
+    if(!loaded){
+        snapshot = data;
+        buildTree(inptKey, snapshot)   
+        tree = tree.reverse()
+        drawTree(tree)
+    }
 }
 
 function errorData(err){
@@ -74,9 +77,11 @@ function buildTree(key, database){
             }
         }
     })
+    loaded = true
 }
 
 function drawTree(data){
+    console.log(data)
     if(data.length == 0){
         alert('ERROR, missing data.')
     }
@@ -138,5 +143,24 @@ function drawTree(data){
                 currentQuadrant++
             }
         })
+        addNames(data, oneUserWidth)
     }
+}
+
+function addNames(data, userWidth){
+    const namesContainer = document.createElement('div')
+    namesContainer.className = 'names-container'
+    namesContainer.style.height = .07 * height + 'px'
+    namesContainer.style.width = width + 'px'
+    namesContainer.style.marginLeft = - userWidth / 8 + 'px'
+    data.forEach((quadrant) => {
+        if(quadrant.drawing){
+            const newName = document.createElement('div')
+            newName.className = 'user-name'
+            newName.innerHTML = quadrant.name
+            namesContainer.appendChild(newName)
+            newName.style.width = 7 * userWidth / 8 + 'px'
+        }
+    })
+    document.getElementById('canvas-wrapper').appendChild(namesContainer)
 }
