@@ -103,6 +103,10 @@ function setup() {
     inp1.style("height", "50");
     inp1.style("width", "50");
     inp1.position(leftMargin*width/2-inp1.width/2, height/2 - height/50 - inp1.height);
+    inp1.style("border-color","#0000dc");
+
+
+    inp1.style("border-width","0.1px");
     inp1.hide();
     //inpt.style("line-height", "4ch");
     //inpt.style("background-image", "linear-gradient(transparent, transparent calc(4ch - 1px), #E7EFF8 0px)");
@@ -131,6 +135,10 @@ function setup() {
     textButton.style("height", "50");
     textButton.style("width", "50");
     textButton.position(leftMargin*width/2-textButton.width/2, height/2 + height/100 );
+    textButton.style("border-color","#0000dc");
+    textButton.style("border-width","0.1px");
+     textButton.style("color","#0000dc");
+     textButton.style("background-color","#d2d2d2");
     textButton.hide();
 
     saveButton = select('#saveButton');
@@ -138,17 +146,25 @@ function setup() {
     saveButton.style("width","100");
     saveButton.position(leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
     saveButton.style("z-index", "1000");
+    saveButton.style("border-color","#0000dc");
+    saveButton.style("color","#0000dc");
+    saveButton.style("border-width","0.1px");
+    saveButton.style("background-color","#d2d2d2");
 
     saveButton.hide();
 
 
     rightDiv = select("#rightDiv");
     rightDiv.position(2*width/3,0);
-    rightDiv.id("gif");
+    
     rightDiv.style("width",width/3);
-    rightDiv.style("height",height);
+    rightDiv.style("height",height-cueHeight*height);
+    rightDiv.style("border-color","#0000dc");
+    rightDiv.style("border-style","solid");
+    
     rightDiv.mousePressed(showDiv);
-    rightDiv.style("background-color","#04040444");
+    //rightDiv.style("background-color","#04040444");
+    rightDiv.style("background-color","#f2f2f2");
     rightDiv.hide();
 
     //rightDiv.mouseMoved(showDiv);
@@ -162,7 +178,10 @@ function setup() {
     leftDiv.position(0,0);
     leftDiv.style("width",width*leftMargin);
     leftDiv.style("height",height-cueHeight*height);
-    leftDiv.style("background-color","#21212B");
+    leftDiv.style("background-color","#f2f2f2");
+    leftDiv.style("border-color","#0000dc");
+    leftDiv.style("border-style","solid");
+    
     leftDiv.hide();
 
 
@@ -601,7 +620,7 @@ function errData(err) {
 }
 
 function showDiv(){
-     rightDiv.style("background-color","#04040444");
+     //rightDiv.style("background-color","#04040444");
      rightText.show();
 
 }
@@ -675,7 +694,9 @@ if (prevText != undefined){
     noStroke();
     fill(33,33,43,130);
     rect(width*leftMargin,0,10,height);
+    rect(2*width/3-10,0,10,height);
     
+
 
     //Menu bar at left
     noFill();
@@ -686,6 +707,7 @@ if (prevText != undefined){
     fill(200,200,255);
     stroke(0,0,250);
     strokeWeight(1);
+
 
     //Upper bar
     rect(0,height-cueHeight*height,width/3,height);
@@ -704,6 +726,7 @@ if (prevText != undefined){
     line(width/3-5,2*cueHeight*height/3-5,width/3-5,2*cueHeight*height/3+5);*/
 
 
+    /*
     noStroke();
 
     fill(0,0,250);
@@ -714,12 +737,17 @@ if (prevText != undefined){
     text('Muro de ' + localStorage.uName + '(Tú)', width/3+20,height - cueHeight*height/2);
     text('Muro de tus invitad@s', 2*width/3+20,height - cueHeight*height/2);
 
+    var inString = "Hola! Tu amig@ " + prevUser + " te invitó a participar en el Cadáver Exquisito Constituyente y te dio un pedacito de muro justo al lado del suyo!. Para poder ver el muro completo, raya tu pedacito. Puedes rayar, escribir o decir lo que quieras con respecto al proceso constituyente."
+    rightText.elt.innerHTML=inString;
 
-
+*/
     /*colorMode(RGB, 1, 1, 1, 1);
     translate(width/3,3*cueHeight*height/4);
     rotate(PI);
     image(arrow, 0, 0,60,20);*/
+
+
+    
 }
 
 
