@@ -26,6 +26,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
+firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
@@ -33,6 +34,7 @@ const databaseRef = firebase.database().ref('drawings')
 let inptKey = localStorage.finalKey;
 
 function setup(){
+    
     databaseRef.get().then(function(snapshot){
         buildTree(inptKey, snapshot)
         console.log(tree)
