@@ -32,8 +32,8 @@ firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-let inptKey = 'CEff7a3ac4e'
-// let inptKey = localStorage.finalKey;
+// let inptKey = 'CEff7a3ac4e'
+let inptKey = localStorage.finalKey;
 
 function setup(){
     databaseRef.on("value",getData,errorData);
