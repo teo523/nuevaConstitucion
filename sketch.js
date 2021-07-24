@@ -158,7 +158,7 @@ function setup() {
     rightDiv.position(2*width/3,0);
     
     rightDiv.style("width",width/3);
-    rightDiv.style("height",height-cueHeight*height);
+    rightDiv.style("height",height);
     rightDiv.style("border-color","#0000dc");
     rightDiv.style("border-style","solid");
     
@@ -177,7 +177,7 @@ function setup() {
     leftDiv = select("#leftDiv");
     leftDiv.position(0,0);
     leftDiv.style("width",width*leftMargin);
-    leftDiv.style("height",height-cueHeight*height);
+    leftDiv.style("height",height);
     leftDiv.style("background-color","#f2f2f2");
     leftDiv.style("border-color","#0000dc");
     leftDiv.style("border-style","solid");
@@ -710,12 +710,12 @@ if (prevText != undefined){
 
 
     //Upper bar
-    rect(0,height-cueHeight*height,width/3,height);
+    /*rect(0,height-cueHeight*height,width/3,height);
     fill(250,250,255);
     rect(width/3,height-cueHeight*height,width/3,height);
     fill(220,220,255);
     rect(2*width/3,height-cueHeight*height,width/3,height);
-
+*/
 
     //left side
 
