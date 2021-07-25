@@ -71,7 +71,7 @@ function setup() {
     canvas.parent('canvascontainer');
 
     if (windowWidth > windowHeight)
-        canvas.position(0, 0);
+        canvas.position((windowWidth-width)/2, 0);
 
     else {
         canvas.position(0, (windowHeight - height) / 2);
@@ -89,6 +89,7 @@ function setup() {
 
     loading = createP("Cargando...");
     loading.style("font-size","3vw");
+    loading.style("color","white");
 
     searchTxt = createInput('');
     searchTxt.hide();
@@ -102,7 +103,7 @@ function setup() {
 
     inp1.style("height", "50");
     inp1.style("width", "50");
-    inp1.position(leftMargin*width/2-inp1.width/2, height/2 - height/50 - inp1.height);
+    inp1.position(leftMargin*width/2-inp1.width/2+ (windowWidth-width)/2, height/2 - height/50 - inp1.height);
     inp1.style("border-color","#0000dc");
 
 
@@ -134,7 +135,7 @@ function setup() {
     textButton.style("z-index", "1000");
     textButton.style("height", "50");
     textButton.style("width", "50");
-    textButton.position(leftMargin*width/2-textButton.width/2, height/2 + height/100 );
+    textButton.position((windowWidth-width)/2+leftMargin*width/2-textButton.width/2, height/2 + height/100 );
     textButton.style("border-color","#0000dc");
     textButton.style("border-width","0.1px");
      textButton.style("color","#0000dc");
@@ -144,7 +145,7 @@ function setup() {
     saveButton = select('#saveButton');
     saveButton.mousePressed(saveDrawing);
     saveButton.style("width","100");
-    saveButton.position(leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
+    saveButton.position((windowWidth-width)/2+leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
     saveButton.style("z-index", "1000");
     saveButton.style("border-color","#0000dc");
     saveButton.style("color","#0000dc");
@@ -155,9 +156,9 @@ function setup() {
 
 
     rightDiv = select("#rightDiv");
-    rightDiv.position(2*width/3,0);
+    rightDiv.position(3*width/4 + (windowWidth-width)/2,0);
     
-    rightDiv.style("width",width/3);
+    rightDiv.style("width",width/4);
     rightDiv.style("height",height);
     rightDiv.style("border-color","#0000dc");
     rightDiv.style("border-style","solid");
@@ -175,7 +176,7 @@ function setup() {
 
 
     leftDiv = select("#leftDiv");
-    leftDiv.position(0,0);
+    leftDiv.position((windowWidth-width)/2,0);
     leftDiv.style("width",width*leftMargin);
     leftDiv.style("height",height);
     leftDiv.style("background-color","#f2f2f2");
@@ -188,12 +189,13 @@ function setup() {
     ctrlDiv = select("#ctrlDiv");
     ctrlDiv.style("width",JSON.stringify(floor(width*leftMargin/2)));
     ctrlDiv.style("height",JSON.stringify((height-cueHeight*height)/2));
-    ctrlDiv.position(leftMargin*width/2-ctrlDiv.width/2,height/2 - height/20 - inp1.height );
+    ctrlDiv.position((windowWidth-width)/2+leftMargin*width/2-ctrlDiv.width/2,height/2 - height/20 - inp1.height );
     ctrlDiv.style("background-color","#transparent");
     ctrlDiv.style("border-color","#0000dc");
     ctrlDiv.style("border-radius","25px");
     ctrlDiv.hide();
 
+    
     
 
 
@@ -370,13 +372,13 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if((started && mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height && movingTxt == 0) startPath()
+    if((started && mouseX > width*leftMargin && mouseX < 3*width/4) && mouseY < height - cueHeight*height && movingTxt == 0) startPath()
 
 }
 
 function mouseDragged(){
   
-        if (isDrawing && (mouseX > width*leftMargin && mouseX < 2*width/3) && mouseY < height - cueHeight*height) {
+        if (isDrawing && (mouseX > width*leftMargin && mouseX < 3*width/4) && mouseY < height - cueHeight*height) {
             addPoint();
         }
     
@@ -694,7 +696,7 @@ if (prevText != undefined){
     noStroke();
     fill(33,33,43,130);
     rect(width*leftMargin,0,10,height);
-    rect(2*width/3-10,0,10,height);
+    rect(3*width/4-10,0,10,height);
     
 
 
