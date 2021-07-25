@@ -1,0 +1,39 @@
+body{
+    margin: 0px;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+
+.canvas-wrapper{
+    width: 100%;
+    overflow: scroll;
+    overflow-y:hidden;
+    border-top: solid 0.3vw #0005ff;
+    // border-bottom: solid 0.3vw #0005ff;
+    .user-name{
+        display: inline-block;
+        height: 100%;
+        // border-right: solid 1px #0005ff;
+        text-align: center;
+        vertical-align: top;
+        font-family: 'Open Sans', sans-serif;
+        color: rgb(0, 5, 255);
+    }
+}
+.user-message{
+    border: 0.3vw solid #0005ff;
+    border-radius: 1vw;
+    width: 40vw;
+    height: 5vw;
+    margin: auto;
+    text-align: center;
+    margin-top: 1.5vw;
+    margin-bottom: 1.5vw;
+    font-family: 'Open Sans', sans-serif;
+    color: rgb(0, 5, 255);
+    font-size: 1.1vw;
+    font-weight: lighter;
+    span{
+        font-weight: bold;
+    }
+}
