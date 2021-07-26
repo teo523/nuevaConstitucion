@@ -218,17 +218,17 @@
                 y2=elmnt.getBoundingClientRect().y+elmnt.getBoundingClientRect().height;
                 // set the element's new position:
                 if (!(x2 - 20 < pos3 && pos3 <= x2  && y2 - 20 < pos4 && pos4 < y2)){
-                    if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width<2*width/3 && elmnt.getBoundingClientRect().x > width*leftMargin){
+                    if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width<3*width/4 + (windowWidth-width)/2 && elmnt.getBoundingClientRect().x > width*leftMargin + (windowWidth-width)/2){
                         elmnt.style.top = (int(elmnt.style.top) - pos2) ;
                         elmnt.style.left = (int(elmnt.style.left) - pos1) ;
                     }
-                    else if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width>=2*width/3) {
+                    else if (elmnt.getBoundingClientRect().x+elmnt.getBoundingClientRect().width>=3*width/4 + (windowWidth-width)/2) {
                         showDiv();
-                        elmnt.style.left = 2*width/3-elmnt.getBoundingClientRect().width-3;
+                        elmnt.style.left = (windowWidth-width)/2+3*width/4-elmnt.getBoundingClientRect().width-3;
                     }
 
-                    else if (elmnt.getBoundingClientRect().x <= width*leftMargin)
-                        elmnt.style.left = width*leftMargin+1;
+                    else if (elmnt.getBoundingClientRect().x <= (windowWidth-width)/2+width*leftMargin)
+                        elmnt.style.left = (windowWidth-width)/2+width*leftMargin+1;
                 }
                 
             }
@@ -284,6 +284,8 @@
 
     function createTxt() {
         var x = document.createElement("TEXTAREA");
+        var rnd = Math.floor(Math.random() * 300) + 1;
+        x.innerHTML="Articulo "+ rnd + ":";
         x.id="txt"+counter;
         x.classList.add("text");
         counter++;
