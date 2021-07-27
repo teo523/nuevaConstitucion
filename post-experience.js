@@ -107,6 +107,7 @@ function drawTree(data){
             if(quadrant.drawing){
                 const drawing = quadrant.drawing
                 for(let pathID in drawing){
+                    strokeWeight(height / 120);
                     const path = drawing[pathID]
                     for(let k = 0; k < Object.keys(path).length - 1; k++){
                         const x1 = originWidth * (path[k].x - .25) + currentQuadrant * (oneUserWidth + originWidth * (.25 - 1/3))
