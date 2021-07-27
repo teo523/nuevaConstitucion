@@ -372,13 +372,13 @@ function changeMode(){
 
 // Events to catch drawing gesture
 function mousePressed(){
-    if((started && mouseX > width*leftMargin && mouseX < 3*width/4) && mouseY < height - cueHeight*height && movingTxt == 0) startPath()
+    if((started && mouseX > width*leftMargin && mouseX < 3*width/4) && mouseY < height && movingTxt == 0) startPath()
 
 }
 
 function mouseDragged(){
   
-        if (isDrawing && (mouseX > width*leftMargin && mouseX < 3*width/4) && mouseY < height - cueHeight*height) {
+        if (isDrawing && (mouseX > width*leftMargin && mouseX < 3*width/4) && mouseY < height) {
             addPoint();
         }
     
@@ -524,7 +524,7 @@ function saveDrawing() {
 	var i;
 	for (i = 0; i < textA.length; i++) {
 		jsonTxt[i]={};
-		jsonTxt[i].x = textA[i].getBoundingClientRect().x / width;
+		jsonTxt[i].x = (textA[i].getBoundingClientRect().x - (windowWidth - width)/2) / width;
 		jsonTxt[i].y = textA[i].getBoundingClientRect().y / height;
 		jsonTxt[i].w = textA[i].getBoundingClientRect().width / width;
 		jsonTxt[i].h = textA[i].getBoundingClientRect().height /height;
