@@ -185,6 +185,13 @@ function setup() {
     
     leftDiv.hide();
 
+    greyDiv = select("#greyDiv");
+    greyDiv.position(0,0);
+    greyDiv.style("width",JSON.stringify((windowWidth-width)/2));
+    greyDiv.style("height",height);
+    greyDiv.style("background-color","rgb(120,120,120)");
+    greyDiv.hide();
+
 
     ctrlDiv = select("#ctrlDiv");
     ctrlDiv.style("width",JSON.stringify(floor(width*leftMargin/2)));
@@ -524,7 +531,7 @@ function saveDrawing() {
 	var i;
 	for (i = 0; i < textA.length; i++) {
 		jsonTxt[i]={};
-		jsonTxt[i].x = (textA[i].getBoundingClientRect().x - (windowWidth - width)/2) / width;
+		jsonTxt[i].x = textA[i].getBoundingClientRect().x  / width;
 		jsonTxt[i].y = textA[i].getBoundingClientRect().y / height;
 		jsonTxt[i].w = textA[i].getBoundingClientRect().width / width;
 		jsonTxt[i].h = textA[i].getBoundingClientRect().height /height;
@@ -557,6 +564,8 @@ function saveDrawing() {
 
     function dataSent(err, status) {
         console.log(status);
+        alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
+        window.location.href = "post-experience.html";
     }
 
     var storageRef = firebase.storage().ref();
@@ -574,10 +583,7 @@ function saveDrawing() {
 
     localStorage.setItem('childKey', userKey);
 
-    alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
-
-
-    window.location.href = "post-experience.html";
+    
 
     saveButton.hide();
 
@@ -638,6 +644,7 @@ function drawPrevious() {
   loading.hide();
   rightDiv.show();
   started = 1;
+  greyDiv.show();
 
 //change for drawings[myMap.get(localStrage.uKey)].drawing
 
@@ -647,9 +654,10 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
     var prevText = drawings[myMap.get(localStorage.uKey)].text;
     var prevUser = drawings[myMap.get(localStorage.uKey)].name;
     for (let j = 0; j < prevDrawing.length; j++) {
-    		var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
+            if (prevDrawing[j] != undefined){
+    		  var col = color(prevDrawing[j][0].z._array[0], prevDrawing[j][0].z._array[1], prevDrawing[j][0].z._array[2], 0.8);
     		
-    	for (let i = 1; i < prevDrawing[j].length; i++) {
+    	       for (let i = 1; i < prevDrawing[j].length; i++) {
     			
     			
     			stroke(col);
@@ -661,7 +669,8 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
 
 
     			}
-    	}
+    	       }
+           }
 
     }
 
@@ -671,7 +680,8 @@ if (prevText != undefined){
         let x = createElement("textarea");
         canvascontainer.appendChild(x.elt);
         if (prevText[j].x-(1/3)>0){
-            x.position((prevText[j].x-(1/3)) * width,prevText[j].y * height);
+            x.position((prevText[j].x-(1/3)) * width ,prevText[j].y * height);
+            x.style("width",JSON.stringify(prevText[j].w*width));
             x.html(prevText[j].text);
             x.attribute("disabled","true");
             x.style("resize","none");
