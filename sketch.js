@@ -531,7 +531,7 @@ function saveDrawing() {
 	var i;
 	for (i = 0; i < textA.length; i++) {
 		jsonTxt[i]={};
-		jsonTxt[i].x = textA[i].getBoundingClientRect().x  / width;
+		jsonTxt[i].x = (textA[i].getBoundingClientRect().x - (windowWidth - width)/2)  / width;
 		jsonTxt[i].y = textA[i].getBoundingClientRect().y / height;
 		jsonTxt[i].w = textA[i].getBoundingClientRect().width / width;
 		jsonTxt[i].h = textA[i].getBoundingClientRect().height /height;
@@ -679,9 +679,10 @@ if (prevText != undefined){
     for (let j = 0; j < prevText.length; j++) {
         let x = createElement("textarea");
         canvascontainer.appendChild(x.elt);
-        if (prevText[j].x-(1/3)>0){
-            x.position((prevText[j].x-(1/3)) * width ,prevText[j].y * height);
+        if (prevText[j].x-(1/3)+(windowWidth - width)/(2*width)>0){
+            x.position((prevText[j].x-(1/3)) * width +(windowWidth - width)/2 ,prevText[j].y * height);
             x.style("width",JSON.stringify(prevText[j].w*width));
+            x.style("height",JSON.stringify(prevText[j].h*height));
             x.html(prevText[j].text);
             x.attribute("disabled","true");
             x.style("resize","none");
