@@ -38,6 +38,13 @@ let inptKey = localStorage.finalKey;
 function setup(){
     databaseRef.on("value",getData,errorData);
     document.getElementById('code').innerHTML = inptKey
+    loadDiv = select("#loadDiv");
+    loadDiv.elt.innerHTML="Cargando el muro final, espera unos segundos...";
+    loadDiv.position(windowWidth/3,windowHeight*0.25);
+    loadDiv.style("font-size","3vw");
+    loadDiv.style("border","none")
+    loadDiv.style("color","#525252");
+
 }
 
 
@@ -114,10 +121,12 @@ function drawTree(data){
                         const y1 = path[k].y * height
                         const x2 = originWidth * (path[k + 1].x - .25) + currentQuadrant * (oneUserWidth + originWidth * (.25 - 1/3))
                         const y2 = path[k + 1].y * height
+                        const y3 = (path[k].y + path[k].dm) * height
                         // Set stroke color using data stored in z
                         stroke(path[k].z.levels[0], path[k].z.levels[1], path[k].z.levels[2], path[k].z.levels[3])
                         // draw line
                         line(x1, y1, x2, y2)
+                        line(x1,y1,x1,y3)
                     }
                 }
                 if(quadrant.texts){
@@ -146,6 +155,7 @@ function drawTree(data){
         })
         addNames(data, oneUserWidth)
     }
+    loadDiv.hide();
 }
 
 function addNames(data, userWidth){

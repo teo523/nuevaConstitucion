@@ -418,8 +418,8 @@ function addPoint() {
         x: mouseX/width,  //NORMALIZED
         y: mouseY/height,   //NORMALIZED
         z: col,
-        dr: drip,
-        dm: dmax
+        dr: drip/height,
+        dm: dmax/height
     };
     currentPath.push(point);
     drawLastPoint()
@@ -448,10 +448,10 @@ function drawDrip(){
     if(drawing.length >= 1) {
         drawing.forEach(path => {
             path.forEach(point => {
-                if(point.dm < point.dr){
-                    point.dm += .1
+                if(point.dm * height < point.dr * height){
+                    point.dm += .1/height
                     stroke(point.z)
-                    line(point.x*width, point.y*height, point.x*width, point.y*height + point.dm)
+                    line(point.x*width, point.y*height, point.x*width, point.y*height + point.dm* height)
                 }
             })
         })
