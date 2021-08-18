@@ -33,8 +33,8 @@ firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-let inptKey = 'CE891b764b5'
-// let inptKey = localStorage.finalKey;
+// let inptKey = 'CE891b764b5'
+let inptKey = localStorage.finalKey;
 
 function preload(){
     font = loadFont('assets/OpenSans-Bold.ttf')
