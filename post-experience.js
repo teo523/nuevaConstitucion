@@ -7,6 +7,7 @@
 let tree = []
 let snapshot;
 let loaded = false
+let font
 // cuadrant aspect
 const originAspect = 16 / 9
 const aspectRatio = .74
@@ -32,12 +33,18 @@ firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-// let inptKey = 'CE891b764b5'
-let inptKey = localStorage.finalKey;
+let inptKey = 'CE891b764b5'
+// let inptKey = localStorage.finalKey;
+
+function preload(){
+    font = loadFont('assets/OpenSans-Bold.ttf')
+}
 
 function setup(){
     databaseRef.on("value",getData,errorData);
     document.getElementById('code').innerHTML = inptKey
+
+    textFont(font)
 
     // Mover este css a style.scss
     loadDiv = select("#loadDiv");
@@ -147,7 +154,8 @@ function drawTree(data){
                         // Draw text
                         fill(0)
                         textSize(height / 45)
-                        text(textObj.text, x + 2, y + 2, w, h)
+                        textStyle(BOLD)
+                        text(textObj.text, x + 2, y + 2, w, h * 2)
                     }
                 }
                 currentQuadrant++
@@ -162,8 +170,6 @@ function addNames(data, userWidth){
     const namesContainer = document.createElement('div')
     namesContainer.className = 'names-container'
     namesContainer.style.height = .07 * height + 'px'
-    namesContainer.style.width = width + 'px'
-    namesContainer.style.marginLeft = - userWidth / 8 + 'px'
     data.forEach((quadrant) => {
         if(quadrant.drawing){
             const newName = document.createElement('div')
