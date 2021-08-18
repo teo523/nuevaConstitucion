@@ -32,12 +32,14 @@ firebase.firestore().enablePersistence();
 const databaseRef = firebase.database().ref('drawings')
 
 // Request database
-// let inptKey = 'CEff7a3ac4e'
+// let inptKey = 'CE891b764b5'
 let inptKey = localStorage.finalKey;
 
 function setup(){
     databaseRef.on("value",getData,errorData);
     document.getElementById('code').innerHTML = inptKey
+
+    // Mover este css a style.scss
     loadDiv = select("#loadDiv");
     loadDiv.elt.innerHTML="Cargando el muro final, espera unos segundos...";
     loadDiv.position(windowWidth/3,windowHeight*0.25);
@@ -103,7 +105,7 @@ function drawTree(data){
         // Note: canvas is longer because it still has the overlapped tails
         const cnv = createCanvas(oneUserWidth * numQuadrants, windowHeight * canvasHeightPct)
         cnv.parent('canvas-wrapper')
-        background(250)
+        background(0, 0)
         const originWidth = originAspect * height
         fill(0, 0, 0, 0)
         stroke(0)
@@ -139,12 +141,10 @@ function drawTree(data){
                         const w = originWidth * textObj.w
                         const h = textObj.h * height
                         // Draw text box
-                        fill(0, 0, 0, 0)
-                        stroke(0)
-                        strokeWeight(2)
+                        fill(255, 217, 102, 200)
+                        noStroke()
                         rect(x, y, w, h)
                         // Draw text
-                        strokeWeight(1)
                         fill(0)
                         textSize(height / 45)
                         text(textObj.text, x + 2, y + 2, w, h)
