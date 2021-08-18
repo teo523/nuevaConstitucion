@@ -679,7 +679,8 @@ if (prevText != undefined){
     for (let j = 0; j < prevText.length; j++) {
         let x = createElement("textarea");
         canvascontainer.appendChild(x.elt);
-        if (prevText[j].x-(1/3)+(windowWidth - width)/(2*width)>0){
+       // if (prevText[j].x-(1/3)+(windowWidth - width)/(2*width)>0){
+        if (true){
             x.position((prevText[j].x-(1/3)) * width +(windowWidth - width)/2 ,prevText[j].y * height);
             x.style("width",JSON.stringify(prevText[j].w*width));
             x.style("height",JSON.stringify(prevText[j].h*height));
