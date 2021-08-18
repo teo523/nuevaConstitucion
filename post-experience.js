@@ -54,6 +54,9 @@ function setup(){
     loadDiv.style("border","none")
     loadDiv.style("color","#525252");
 
+    but = select("#feedback");
+    but.position(0,0.25/2*height);
+
 }
 
 
@@ -147,8 +150,8 @@ function drawTree(data){
                         const y = textObj.y * height
                         const w = originWidth * textObj.w
                         const h = textObj.h * height
-                        // Draw text box
-                        fill(255, 217, 102, 200)
+                        // Draw text box 
+                        fill('rgba(240, 240, 200,0.8)')
                         noStroke()
                         rect(x, y, w, h)
                         // Draw text

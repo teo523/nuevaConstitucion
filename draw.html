@@ -41,7 +41,7 @@
  textarea{
     position: : absolute;
     color: rgb(70,50,50);
-    background-color: rgba(255, 217, 102,0.8);
+    background-color: rgba(240, 240, 200,0.8);
     justify-content: center;
     /*text-transform: uppercase;*/
     font-weight: bold;
@@ -286,9 +286,10 @@
 
     function createTxt() {
         var x = document.createElement("TEXTAREA");
-        var rnd = Math.floor(Math.random() * 300) + 1;
+        var rnd = Math.floor(Math.random() * 120) + 1;
         x.innerHTML="Articulo "+ rnd + ":";
         x.id="txt"+counter;
+        x.onkeyup=textAreaAdjust;
         x.classList.add("text");
         counter++;
 
@@ -304,6 +305,19 @@
 
 
     }
+
+function textAreaAdjust(o) {
+ 
+    var areas = document.getElementsByClassName("text");
+for (var i = 0; i < areas.length; i++) {
+   
+ areas[i].style.height = "1px";
+  areas[i].style.height = (5+areas[i].scrollHeight)+"px";
+
+}
+
+
+}
 
     function blockCanvas() {
         block = 1;

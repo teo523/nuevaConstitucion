@@ -14,7 +14,7 @@ var counter = 0;
 var trimmed;
 var imgCreated = 0;
 var userKey = "CE";
-var letters = ['a', 'b', 'c', 'd', 'e', 'f', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+var letters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 var d;
 var inTxt;
 var textA;
@@ -52,12 +52,15 @@ let sendSearch;
 let mode = 'draw'
 // let mode = 'text'
 let textBox
+let alice;
 
 function preload() {
     img = loadImage('assets/images/brick2.jpeg');
     preImg = loadImage('assets/images/prev.jpg');
     osb =  loadImage('assets/images/OSB.jpeg');
     myFont = loadFont("assets/OpenSans.ttf");
+    if (localStorage.uKey != "") 
+    alice = createImg("assets/images/alice.gif");
 
 }
 
@@ -87,9 +90,14 @@ function setup() {
     //inTxt = select("#txt");
     //inTxt.position(100,200);
 
-    loading = createP("Cargando...");
+    loading = createP("Cargando...Esto debería demorar, a lo más, uno o dos minutos. Paciencia! ");
     loading.style("font-size","3vw");
     loading.style("color","white");
+    
+  
+    
+    if (localStorage.uKey != "" && localStorage.uKey != undefined)
+      alice.position((width - alice.width)/2,loading.height + height/10);
 
     searchTxt = createInput('');
     searchTxt.hide();
@@ -202,7 +210,19 @@ function setup() {
     ctrlDiv.style("border-radius","25px");
     ctrlDiv.hide();
 
+    if (localStorage.uKey == "" || localStorage.uKey == undefined)
+        drawPrevious()
+
+    else {
+        if (localStorage.uKey[0] != "C" || localStorage.uKey[1] != "E" || localStorage.uKey.length != 11){
+            alert("Código incorrecto. El código debe comenzar con 'CE' y después contiene 9 números")
+            window.location.href = "index.html";
+        }
     
+    
+
+    }
+
     
 
 
@@ -592,6 +612,8 @@ function saveDrawing() {
 }
 
 function gotData(data) {
+
+    if (userKey)
     // clear the listing
     var elts = selectAll('.listing');
     for (var i = 0; i < elts.length; i++) {
@@ -616,7 +638,7 @@ function gotData(data) {
         li.parent('drawinglist');*/
     }
 
-   
+   if (localStorage.uKey != "" && localStorage.uKey != undefined)
    drawPrevious();
 
 
@@ -641,6 +663,9 @@ function drawPrevious() {
   inp1.show();
   leftDiv.show();
   ctrlDiv.show();
+  if (localStorage.uKey != "") 
+  alice.hide();
+
   loading.hide();
   rightDiv.show();
   started = 1;
