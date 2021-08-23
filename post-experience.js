@@ -55,7 +55,7 @@ function setup(){
     loadDiv.style("color","#525252");
 
     but = select("#feedback");
-    but.position(0,0.25/2*height);
+    but.position(10,0.25/2*height);
 
 }
 
