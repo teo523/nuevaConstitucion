@@ -432,7 +432,7 @@ function addPoint() {
     colorMode(RGB, 1, 1, 1, 1);
     var col = color(inp1.color()._array[0], inp1.color()._array[1], inp1.color()._array[2], 0.8);
     cl1 = col;
-    var drip = random(10);
+    var drip = random(5);
     var dmax = 0;
     var point = {
         x: mouseX/width,  //NORMALIZED
