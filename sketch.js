@@ -26,6 +26,7 @@ var rightDiv;
 var rightText;
 var osb;
 var started = 0;
+let slider;
 
 
 var inp1;
@@ -57,8 +58,9 @@ let alice;
 function preload() {
     img = loadImage('assets/images/brick2.jpeg');
     preImg = loadImage('assets/images/prev.jpg');
-    osb =  loadImage('assets/images/OSB.jpeg');
+    
     myFont = loadFont("assets/OpenSans.ttf");
+     //level = loadImage("assets/images/level.png");
     if (localStorage.uKey != "") 
     alice = createImg("assets/images/alice.gif");
 
@@ -90,14 +92,22 @@ function setup() {
     //inTxt = select("#txt");
     //inTxt.position(100,200);
 
-    loading = createP("Cargando...Esto debería demorar, a lo más, uno o dos minutos. Paciencia! ");
+    slider = createSlider(0, 255, 100);
+    slider.position(leftMargin*width/2-slider.width/3+ (windowWidth-width)/2, height/2);
+    slider.style('width', '80px');
+    slider.hide();
+    slider.style("color","#dc00dc");
+
+
+
+    loading = createP("Estamos cargando el muro de tu amig@...Esto debería demorar, a lo más, uno o dos minutos. Paciencia! ");
     loading.style("font-size","3vw");
     loading.style("color","white");
     
   
     
     if (localStorage.uKey != "" && localStorage.uKey != undefined)
-      alice.position((width - alice.width)/2,loading.height + height/10);
+      alice.position((width - alice.width)/2,(height-alice.height)/2);
 
     searchTxt = createInput('');
     searchTxt.hide();
@@ -143,7 +153,7 @@ function setup() {
     textButton.style("z-index", "1000");
     textButton.style("height", "50");
     textButton.style("width", "50");
-    textButton.position((windowWidth-width)/2+leftMargin*width/2-textButton.width/2, height/2 + height/100 );
+    textButton.position((windowWidth-width)/2+leftMargin*width/2-textButton.width/2, height/2 + height/20 );
     textButton.style("border-color","#0000dc");
     textButton.style("border-width","0.1px");
      textButton.style("color","#0000dc");
@@ -153,7 +163,7 @@ function setup() {
     saveButton = select('#saveButton');
     saveButton.mousePressed(saveDrawing);
     saveButton.style("width","100");
-    saveButton.position((windowWidth-width)/2+leftMargin*width/2-saveButton.width/2, height/2 + height/10 + textButton.height);
+    saveButton.position((windowWidth-width)/2+leftMargin*width/2-saveButton.width/2, height/2 + height/7 + textButton.height);
     saveButton.style("z-index", "1000");
     saveButton.style("border-color","#0000dc");
     saveButton.style("color","#0000dc");
@@ -438,8 +448,9 @@ function addPoint() {
         x: mouseX/width,  //NORMALIZED
         y: mouseY/height,   //NORMALIZED
         z: col,
-        dr: drip/height,
-        dm: dmax/height
+        dr: (slider.value()/250)*drip/height,
+        dm: dmax/height,
+        s: slider.value()/50 + 0.2
     };
     currentPath.push(point);
     drawLastPoint()
@@ -457,6 +468,7 @@ function drawLastPoint(){
         const p1 = path[path.length - 2]
         const p2 = path[path.length - 1]
         stroke(p1.z)
+        strokeWeight(p1.s)
         line(p1.x*width, p1.y*height, p2.x*width, p2.y*height)
     }
 }
@@ -470,6 +482,7 @@ function drawDrip(){
             path.forEach(point => {
                 if(point.dm * height < point.dr * height){
                     point.dm += .1/height
+                    strokeWeight(point.s)
                     stroke(point.z)
                     line(point.x*width, point.y*height, point.x*width, point.y*height + point.dm* height)
                 }
@@ -489,6 +502,7 @@ function resetDrawToCurrent(){
         drawing.forEach(path => {
             if(path.length > 1){
                 stroke(path[0].z)
+                strokeWeight(path[0].s)
                 for(let i = 0; i < path.length - 1; i++){
                     line(path[i].x, path[i].y, path[i + 1].x, path[i + 1].y)
                     line(path[i].x, path[i].y, path[i].x, path[i].y + path[i].dm)
@@ -582,13 +596,40 @@ function saveDrawing() {
     var result = ref.push(data, dataSent);
     console.log(result.key);
 
+
+    background(23);
+    console.log("qq");
+   
+    saveButton.hide();
+ 
+    leftDiv.hide();
+    ctrlDiv.hide();
+    rightDiv.hide();
+    textButton.hide();
+    inp1.hide();
+    slider.hide();
+    var areas = document.getElementsByTagName('textarea');
+    for (var i = 0; i < areas.length; i++) {
+   
+    areas[i].style.display = "none";
+    
+
+}
+    loading2 = createP("Estamos enviando tu muro...espera unos segundos...");
+    
+    loading2.style("width",JSON.stringify(floor(width/2)));
+    loading2.position((windowWidth-width)/2 + width/2 - loading2.width/2,0);
+    loading2.style("font-size","3vw");
+    loading2.style("color","grey");
+
     function dataSent(err, status) {
         console.log(status);
-        alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro")
+        loading2.style.display = "none";
+        alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro.")
         window.location.href = "post-experience.html";
     }
 
-    var storageRef = firebase.storage().ref();
+    /*var storageRef = firebase.storage().ref();
     var childRef = storageRef.child("/images/" + userKey + ".jpg");
 
     var canvas0 = document.getElementById('defaultCanvas0');
@@ -599,15 +640,13 @@ function saveDrawing() {
             console.log('Uploaded a blob or file!');
         });
 
-    });
+    });*/
 
     localStorage.setItem('childKey', userKey);
 
     
-
-    saveButton.hide();
-
-
+    
+ 
 
 }
 
@@ -621,6 +660,8 @@ function gotData(data) {
     }
 
     drawings = data.val();
+
+
     var keys = Object.keys(drawings);
     for (var i = 0; i < keys.length; i++) {
         myMap.set(drawings[keys[i]].userKey,keys[i]);
@@ -663,6 +704,9 @@ function drawPrevious() {
   inp1.show();
   leftDiv.show();
   ctrlDiv.show();
+  slider.show();
+  //to-do: include this level image beneath slider
+  //image(level,leftMargin*width/2-slider.width/3+ (windowWidth-width)/2, height/2,leftMargin*width/2,height/100);
   if (localStorage.uKey != "") 
   alice.hide();
 
@@ -689,6 +733,7 @@ if (localStorage.uKey != "" && localStorage.uKey != undefined){
     			let newX1 = prevDrawing[j][i].x - (1/3);
     			let newX2 = prevDrawing[j][i-1].x - (1/3);
     			if (newX1 > 0 && newX2 > 0){
+                    strokeWeight(prevDrawing[j][i].s)
             		line(newX1*width, prevDrawing[j][i].y*height, newX2*width, prevDrawing[j][i-1].y*height);
             		line(newX1*width, prevDrawing[j][i].y*height, newX1*width, (prevDrawing[j][i].y)*height+prevDrawing[j][i].dm);
 

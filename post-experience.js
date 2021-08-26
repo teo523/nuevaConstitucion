@@ -137,6 +137,7 @@ function drawTree(data){
                         // Set stroke color using data stored in z
                         stroke(path[k].z.levels[0], path[k].z.levels[1], path[k].z.levels[2], path[k].z.levels[3])
                         // draw line
+                        strokeWeight(path[k].s)
                         line(x1, y1, x2, y2)
                         line(x1,y1,x1,y3)
                     }
@@ -156,7 +157,7 @@ function drawTree(data){
                         rect(x, y, w, h)
                         // Draw text
                         fill(0)
-                        textSize(height / 45)
+                        textSize(height / 55)
                         textStyle(BOLD)
                         text(textObj.text, x + 2, y + 2, w, h * 2)
                     }
