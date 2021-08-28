@@ -27,6 +27,7 @@ var rightText;
 var osb;
 var started = 0;
 let slider;
+let drawn = 0;
 
 
 var inp1;
@@ -679,8 +680,11 @@ function gotData(data) {
         li.parent('drawinglist');*/
     }
 
-   if (localStorage.uKey != "" && localStorage.uKey != undefined)
+   
+   if (localStorage.uKey != "" && localStorage.uKey != undefined && drawn == 0){
    drawPrevious();
+   drawn = 1;
+}
 
 
 
