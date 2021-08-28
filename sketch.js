@@ -660,6 +660,7 @@ function gotData(data) {
         elts[i].remove();
     }
 
+    if (drawn == 0)
     drawings = data.val();
 
 
