@@ -137,7 +137,7 @@ border-style: dashed;
                 <input type="text" id="userKey" name="userKey">
             </div>
             <div class="input-container">
-                <a href="./draw.html"><button onclick="storeKey()">EMPEZAR</button></a>
+                <a href="./post-experience.html"><button onclick="storeKey()">EMPEZAR</button></a>
             </div>
         </div>
     </div>
@@ -148,7 +148,7 @@ border-style: dashed;
         function storeKey() {
             selValue = document.getElementById("userKey").value
             userName = document.getElementById("fname").value
-            localStorage.setItem('uKey', selValue);
+            localStorage.setItem('finalKey', selValue);
             localStorage.setItem('uName', userName);
 
         }

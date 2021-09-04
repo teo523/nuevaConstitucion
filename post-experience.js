@@ -57,6 +57,13 @@ function setup(){
     but = select("#feedback");
     but.position(10,0.25/2*height);
 
+    saveC = createButton("save");
+    saveC.mousePressed(guardar);
+
+}
+
+function guardar(){
+    save("a.svg");
 }
 
 
@@ -113,7 +120,7 @@ function drawTree(data){
         // Create Canvas
         const oneUserWidth = aspectRatio * windowHeight * canvasHeightPct
         // Note: canvas is longer because it still has the overlapped tails
-        const cnv = createCanvas(oneUserWidth * numQuadrants, windowHeight * canvasHeightPct)
+        const cnv = createCanvas(oneUserWidth * numQuadrants, windowHeight * canvasHeightPct,SVG)
         cnv.parent('canvas-wrapper')
         background(0, 0)
         const originWidth = originAspect * height
