@@ -101,7 +101,7 @@ function setup() {
 
 
 
-    loading = createP("Estamos cargando el muro de tu amig@...Esto debería demorar, a lo más, uno o dos minutos. Paciencia! ");
+    loading = createP("We are fetching your friend's wall. This might take a couple of minutes. Please be patient!");
     loading.style("font-size","3vw");
     loading.style("color","white");
     
@@ -616,7 +616,7 @@ function saveDrawing() {
     
 
 }
-    loading2 = createP("Estamos enviando tu muro...espera unos segundos...");
+    loading2 = createP("We are sending your wall, please wait...");
     
     loading2.style("width",JSON.stringify(floor(width/2)));
     loading2.position((windowWidth-width)/2 + width/2 - loading2.width/2,0);
