@@ -626,7 +626,7 @@ function saveDrawing() {
     function dataSent(err, status) {
         console.log(status);
         loading2.style.display = "none";
-        alert("Gracias por aportar!! El código de tu dibujo es: " + userKey + ". COPIALO y envíaselo a tus amigos para que continúen tu muro.")
+        alert("Thank you for expressing yourself!! The code for your wall is : " + userKey + ". COPY IT, and then send it to a friend so they can continue with it.")
         window.location.href = "post-experience.html";
     }
 
