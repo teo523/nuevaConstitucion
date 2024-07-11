@@ -292,7 +292,7 @@
     function createTxt() {
         var x = document.createElement("TEXTAREA");
         var rnd = Math.floor(Math.random() * 120) + 1;
-        x.innerHTML="Articulo "+ rnd + ":";
+        x.innerHTML="Statement #"+ rnd + ":";
         x.id="txt"+counter;
         x.onkeyup=textAreaAdjust;
         x.classList.add("text");
